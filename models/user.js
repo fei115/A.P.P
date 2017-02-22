@@ -4,7 +4,14 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var userSchema = new Schema({
-  name: String
+  username:    { type: String, maxlength: 20, required: true },
+  password:    { type: String, required: true },
+  salt:        { type: String, required: true },
+  name:        { type: String, required: true },
+  email:       { type: String, maxlength: 20, required: true },
+  phone:       { type: String, maxlength: 11 },
+  rating:      { type: Number, min: 0, max: 5, default: 0 },
+  role:        { type: String, enum: ['Admin', 'User'], required: true }
 });
 
 // the schema is useless so far
