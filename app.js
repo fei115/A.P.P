@@ -4,14 +4,12 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var session = require('express-session');
-var jwt = require('jsonwebtoken');
 
-var mongoose = require('./config/db.js'); // handles db connection
-var config = require('./config/config.js');
+var mongoose = require('./config/db.js'); 
+var passport = require('./middleware/auth.js'); 
 
 /* Configuration */
 var port = process.env.port || 3000;
-app.set('secretKey', config.secret);
 
 /* To parse URL encoded data */
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -20,8 +18,11 @@ app.use(bodyParser.json())
 /* To parse cookie */
 app.use(cookieParser())
 
-// use morgan to log requests to the console
+/* To use morgan to log requests to the console */
 app.use(morgan('dev'));
+
+/* To use passport(handles login) */
+app.use(passport.initialize());
 
 /* Routes */
 var User = require('./routes/user.js');

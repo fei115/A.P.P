@@ -29,11 +29,13 @@ router.post('/post/create', function(req, res, next){
 		"exchanger": req.body.exchanger
 	});
 	post.save(function(err, doc) {
-		if (err) 
+		if (err) {
 			next(err);
-		else 
+		}
+		else {
 			console.log("Post Created Successfully");
-			res.json(doc.toJSON());
+			res.send(doc.toJSON());
+		}
 	});
 });
 

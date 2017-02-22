@@ -3,8 +3,8 @@
 curl -H "Content-Type: application/json" -X POST -d '{
 	"title": "Sell CS446 Textbook",
 	"description": "With assignments",
-	"creator": "58ac24e7c01f9313a048566f",
-	"book": "58ac3e80127f8b183c9f02da",
+	"creator": "58ad973c3fa41f07342caf4e",
+	"book": "58ad97423fa41f07342caf4f",
 	"price": 20,
 	"condition": 95,
 	"type": "Selling"

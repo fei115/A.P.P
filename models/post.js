@@ -18,7 +18,10 @@ var postSchema = new Schema({
 });
 
 // Ensure foreign key integrity.
-idexists.forPath(postSchema.path("creator"));
+idexists.forPath(postSchema.path("creator"), {
+    message: "Creator does not exist."
+});
+
 idexists.forPath(postSchema.path("book"));
 idexists.forPath(postSchema.path("exchanger"));
 

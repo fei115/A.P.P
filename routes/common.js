@@ -8,13 +8,16 @@ function loadDocument(model) {
   return function(req, res, next) {
 	  var objectId = req.params.id;
 	  model.findById(objectId, function(err, doc) {
-		if (err)
+		if (err) {
 			next(err);
-		else if (!doc)
+		}
+		else if (!doc) {
 			next(new Error("Error finding the " + model.modelName));
-		else
+		}
+		else {
 			req.doc = doc;
 			next();
+		}
     });
   }
 }

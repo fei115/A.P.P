@@ -24,11 +24,13 @@ router.post('/book/create', function(req, res, next){
 		"publisher": req.body.publisher
 	});
 	book.save(function(err, doc) {
-		if (err) 
+		if (err) {
 			next(err);
-		else 
+		}
+		else { 
 			console.log("Book Created Successfully");
-			res.send(doc.toObject());
+			res.send(doc.toJSON());
+		}
 	});
 });
 

@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var userSchema = new Schema({
-  username:    { type: String, maxlength: 20, required: true },
+  username:    { type: String, maxlength: 20, required: true, unique: true},
   password:    { type: String, required: true },
   salt:        { type: String, required: true },
   name:        { type: String, required: true },
@@ -13,6 +13,10 @@ var userSchema = new Schema({
   rating:      { type: Number, min: 0, max: 5, default: 0 },
   role:        { type: String, enum: ['Admin', 'User'], required: true }
 });
+
+userSchema.methods.validPassword = function( pwd ) {
+    return ( this.password === pwd );
+};
 
 // the schema is useless so far
 // we need to create a model using it
