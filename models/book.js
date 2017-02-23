@@ -5,11 +5,11 @@ var Schema = mongoose.Schema;
 // create a schema
 var bookSchema = new Schema({
   title:         { type: String, required: true },
-  authors:       { type: [String], required: true },
+  //authors:       { type: [String], required: true },
   isbn:          { type: String, index: true, unique: true },
   courses:       { type: [String] },
-  publishedDate: Date,
-  publisher:     String
+  //publishedDate: Date,
+  //publisher:     String
 });
 
 bookSchema.statics.findByTitle = function(input, cb) {

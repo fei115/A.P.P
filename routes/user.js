@@ -57,4 +57,13 @@ router.post('/user/login',
 		});
 });
 
+/**
+ * Return the posts created and ended by the user
+ */
+/*  router.post('/user/posts', function(req, res, next){
+	 
+	 
+	 
+ }); */
+
 module.exports = router;

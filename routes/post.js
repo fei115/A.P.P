@@ -42,28 +42,36 @@ router.post('/post/create', function(req, res, next){
 });
 
 /**
- * Search for a post by specifying one of the following
- * 		1. Book Title
- *      2. ISBN Code
- *      3. Course Number 
+ * Search for posts by specifying the following
+ * 		1. Book object id
+ *		2. [Optional] post type
  */
-/* router.get('/post/search', function(req, res, next){
-	//if (req.query.isbn) {
-		Book.findByTitle('Express', function(err, books) {
-			res.json(books.toJSON())
-	//}
-}) */
-
-/* Person.find({lastname: 'Robertson'}, {_id: 1}, function(err, docs) {
-
-    // Map the docs into an array of just the _ids
-    var ids = docs.map(function(doc) { return doc._id; });
-
-    // Get the companies whose founders are in that set.
-    Company.find({founder: {$in: ids}}, function(err, docs) {
-        // docs contains your answer
-    });
-}); */
+router.get('/post/search/criteria', function(req, res, next){
+	if(req.query.book) {
+		var query = Post.find({
+			book: req.query.book,
+			status: 'Open'
+		});
+		
+		if(req.query.type) 
+			query.where('type').equals(req.query.type);
+		
+		query
+		.populate('book')
+		.populate('creator')
+		.lean()
+		.sort('-dateCreated')
+		.exec(function(err, posts) {
+			if(err) {
+				next(err);
+			} else {
+				res.json(posts);
+			}
+		})
+	} else {
+		res.json();
+	}
+}) 
 
 
 module.exports = router;

@@ -8,7 +8,7 @@ var userSchema = new Schema({
   password:    { type: String, required: true },
   salt:        { type: String, required: true },
   name:        { type: String, required: true },
-  email:       { type: String, maxlength: 20, required: true },
+  email:       { type: String, maxlength: 40, required: true },
   phone:       { type: String, maxlength: 11 },
   rating:      { type: Number, min: 0, max: 5, default: 0 },
   role:        { type: String, enum: ['Admin', 'User'], required: true }
