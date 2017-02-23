@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Book = require('../models/book.js');
 var Post = require('../models/post.js');
 var Common = require('./common.js')
+
 /**
  * Get a post by 'id'
  */
@@ -26,7 +27,8 @@ router.post('/post/create', function(req, res, next){
 		// image
 		"status": 'Open',
 		"type": req.body.type,
-		"exchanger": req.body.exchanger
+		"exchanger": req.body.exchanger,
+		"dateCreated": Date()
 	});
 	post.save(function(err, doc) {
 		if (err) {
@@ -38,5 +40,30 @@ router.post('/post/create', function(req, res, next){
 		}
 	});
 });
+
+/**
+ * Search for a post by specifying one of the following
+ * 		1. Book Title
+ *      2. ISBN Code
+ *      3. Course Number 
+ */
+/* router.get('/post/search', function(req, res, next){
+	//if (req.query.isbn) {
+		Book.findByTitle('Express', function(err, books) {
+			res.json(books.toJSON())
+	//}
+}) */
+
+/* Person.find({lastname: 'Robertson'}, {_id: 1}, function(err, docs) {
+
+    // Map the docs into an array of just the _ids
+    var ids = docs.map(function(doc) { return doc._id; });
+
+    // Get the companies whose founders are in that set.
+    Company.find({founder: {$in: ids}}, function(err, docs) {
+        // docs contains your answer
+    });
+}); */
+
 
 module.exports = router;

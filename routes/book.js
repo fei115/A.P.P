@@ -20,6 +20,7 @@ router.post('/book/create', function(req, res, next){
 		"title": req.body.title,
 		"authors": req.body.authors,
 		"isbn": req.body.isbn,
+		"courses": req.body.courses,
 		"publishedDate": req.body.date || Date(),
 		"publisher": req.body.publisher
 	});
@@ -35,9 +36,27 @@ router.post('/book/create', function(req, res, next){
 });
 
 /**
- * Search a book
- * Currently, supports find by ISBN or title+author
+ * Search a book, currently supports search via
+ * 		1. title
+ *		2. isbn
+ *		3. course number
  */
-//router.post('/book/search')
+router.get('/book/search/criteria', function(req, res, next){
+	var callback = function(err, results) {
+		if (err) 
+			next(err);
+		else 
+			res.json(results);
+	}
+	if(req.query.isbn) { // by ISBN
+		Book.findByISBN(req.query.isbn, callback);
+	} else if(req.query.title) { // by title
+		Book.findByTitle(req.query.title, callback);
+	} else if(req.query.course) { // by course
+		Book.findByCourse(req.query.course, callback);
+	} else {
+		res.json();
+	}
+});
 
 module.exports = router;

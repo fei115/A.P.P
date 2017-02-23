@@ -19,7 +19,7 @@ router.get('/user/:id', Common.loadDocument(User), function(req, res){
 /**
  * Create a new user
  */
-router.post('/user/create', function(req, res){
+router.post('/user/create', function(req, res, next){
 	var salt = UserService.genRandomString(16);
 	var passwordHash = UserService.hashPassword(req.body.password, salt);
 	
