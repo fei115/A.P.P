@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 // create a schema
 var bookSchema = new Schema({
   title:         { type: String, required: true },
-  //authors:       { type: [String], required: true },
+  authors:       { type: [String] },
   isbn:          { type: String, index: true, unique: true },
   courses:       { type: [String] },
   //publishedDate: Date,
