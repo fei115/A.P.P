@@ -24,7 +24,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 		"password": "235235",
 		"name": "Betty Chen",
 		"email": "l235chen@uwaterloo.ca",
-		"phone": "",
+		"phone": "4169397568",
 		"role": "Admin"
 	}' http://localhost:3000/api/user/create
 
@@ -34,7 +34,7 @@ curl -H "Content-Type: application/json" -X POST -d '{
 		"password": "222222",
 		"name": "Hau Chen",
 		"email": "h222@uwaterloo.ca",
-		"phone": "",
+		"phone": "2269893548",
 		"role": "Admin"
 	}' http://localhost:3000/api/user/create
 
