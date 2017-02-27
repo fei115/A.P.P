@@ -18,7 +18,7 @@ router.get('/book/:id', Common.loadDocument(Book), function(req, res){
 router.post('/book/create', function(req, res, next){
 	var book = new Book({
 		"title": req.body.title,
-		//"authors": req.body.authors,
+		"authors": req.body.authors,
 		"isbn": req.body.isbn,
 		"courses": req.body.courses,
 		//"publishedDate": req.body.date || Date(),
