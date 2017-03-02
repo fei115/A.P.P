@@ -5,8 +5,8 @@ var Schema = mongoose.Schema;
 
 /* create a schema */
 var postSchema = new Schema({
-  title:       { type: String, maxlength: 20, required: true },
-  description: { type: String, maxlength: 50 },
+  title:       { type: String, /* maxlength: 20, */ required: true },
+  description: { type: String, /* maxlength: 50 */},
   creator:     { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   book: 	   { type: Schema.Types.ObjectId, required: true, ref: 'Book' },
   price:	   { type: Number, min: 0, required: true },

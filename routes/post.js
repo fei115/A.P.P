@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose'); 
-var Book = require('../models/book.js');
 var Post = require('../models/post.js');
 var Common = require('./common.js')
 
@@ -11,6 +10,22 @@ var Common = require('./common.js')
 router.get('/post/:id', Common.loadDocument(Post), function(req, res){
 	var doc = req.doc;
 	res.json(doc.toJSON());
+});
+
+/**
+ * @deprecated Get all posts from the database
+ */
+router.get('/posts', function(req, res){
+	Post
+	.find()
+	.lean()
+	.exec(function(err, posts) {
+		if(err) {
+			next(err);
+		} else {
+			res.json(posts);
+		}
+	});
 });
 
 /**
@@ -67,7 +82,7 @@ router.get('/post/search/criteria', function(req, res, next){
 			} else {
 				res.json(posts);
 			}
-		})
+		});
 	} else {
 		res.json();
 	}

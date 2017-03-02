@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('../middleware/auth.js');
+var auth = require('../middleware/auth.js');
 var jwt = require('jsonwebtoken');
 
 var User = require('../models/user.js');
@@ -48,7 +48,7 @@ router.post('/user/create', function(req, res, next){
  * Login an user using userName and password.
  */
 router.post('/user/login', 
-	passport.authenticate('local', { session: false }),
+	auth.passport.authenticate('local', { session: false }),
     function(req, res) {
 		var token = jwt.sign({ username: req.user.username }, config.jwtSecretKey);
 		res.status(200).json({
@@ -57,6 +57,15 @@ router.post('/user/login',
 		});
 });
 
+router.get('/usertest', auth.ensureAuthenticated,
+    function(req, res) {
+		res.json({
+			message: 'logged in',
+			user: req.user,
+			token: req.token
+		});
+
+});
 /**
  * Return the posts created and ended by the user
  */

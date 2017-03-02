@@ -6,7 +6,7 @@ var morgan = require('morgan');
 var session = require('express-session');
 
 var mongoose = require('./config/db.js'); 
-var passport = require('./middleware/auth.js'); 
+var auth = require('./middleware/auth.js'); 
 
 /* Configuration */
 var port = process.env.port || 3000;
@@ -22,7 +22,10 @@ app.use(cookieParser())
 app.use(morgan('dev'));
 
 /* To use passport(handles login) */
-app.use(passport.initialize());
+app.use(auth.passport.initialize());
+
+/* Statics */
+app.use('/images', express.static(__dirname + '/writable'));
 
 /* Routes */
 var User = require('./routes/user.js');
