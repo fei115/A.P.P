@@ -1,8 +1,6 @@
 var expressJwt = require('express-jwt');  
-
-
 var User = require('../models/user.js');
-var UserService = require('../services/user.js');
+var AuthService = require('../services/auth.js');
 var config = require('../config/config.js');
 var fbConfig = require('../config/fb.js');
 
@@ -12,17 +10,19 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 
 var ensureAuthenticated = expressJwt({secret : config.jwtSecretKey});
 
-passport.use(new LocalStrategy(
-    function(username, password, done) {
-        User.findOne({username: username}, function(err, user) {
+passport.use(new LocalStrategy({
+		usernameField: 'email'
+	},
+    function(email, password, done) {
+        User.findOne({'local.email': email}, function(err, user) {
             if (err)
                 return done(err);
             else if (!user)
                 return done(null, false, {
 					success: false,
-                    message: 'Incorrect username.'
+                    message: 'Incorrect email.'
                 });
-            else if (!user.validPassword( UserService.hashPassword(password, user.salt)) )
+            else if (!user.validPassword( AuthService.hashPassword(password, user.local.salt)) )
                 return done(null, false, {
 					success: false,
                     message: 'Incorrect password.'
@@ -45,7 +45,7 @@ passport.use('facebook', new FacebookStrategy({
     process.nextTick(function() {
      
       // find the user in the database based on their facebook id
-      User.findOne({ 'id' : profile.id }, function(err, user) {
+      User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
  
         // if there is an error, stop everything and return that
         // ie an error connecting to the database
@@ -57,19 +57,23 @@ passport.use('facebook', new FacebookStrategy({
             return done(null, user); // user found, return that user
           } else {
             // if there is no user found with that facebook id, create them
-            var newUser = new User();
- 
-            // set all of the facebook information in our user model
-            newUser.fb.id    = profile.id; // set the users facebook id                 
-            newUser.fb.access_token = access_token; // we will save the token that facebook provides to the user                    
-            newUser.fb.firstName  = profile.name.givenName;
-            newUser.fb.lastName = profile.name.familyName; // look at the passport user profile to see how names are returned
-            newUser.fb.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
- 
+			var newUser = new User({
+				"firstname": profile.name.givenName,
+				"lastname": profile.name.familyName,
+				"rating": 0,
+				"verified": true, 
+				"role": 'User',
+				"facebook": {
+					"id": profile.id,
+					"token": access_token,
+					"email": profile.emails[0].value
+				}
+			});
+			
             // save our user to the database
             newUser.save(function(err) {
               if (err)
-                throw err;
+                return done(err);
  
               // if successful, return the new user
               return done(null, newUser);
@@ -80,7 +84,4 @@ passport.use('facebook', new FacebookStrategy({
 }));
 
 
-module.exports = {
-	passport,
-	ensureAuthenticated
-} 
+module.exports = passport;

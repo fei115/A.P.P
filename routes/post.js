@@ -21,9 +21,9 @@ router.get('/posts', function(req, res){
 	.lean()
 	.exec(function(err, posts) {
 		if(err) {
-			next(err);
+			return next(err);
 		} else {
-			res.json(posts);
+			return res.json(posts);
 		}
 	});
 });
@@ -31,11 +31,11 @@ router.get('/posts', function(req, res){
 /**
  * Create a new post
  */
-router.post('/post/create', function(req, res, next){
+router.put('/post/create', function(req, res, next){
 	var post = new Post({
 		"title": req.body.title,
 		"description": req.body.description,
-		"creator": req.body.creator,
+		"creator": req.user.id,
 		"book": req.body.book,
 		"price": req.body.price,
 		"condition": req.body.condition,
@@ -55,6 +55,13 @@ router.post('/post/create', function(req, res, next){
 		}
 	});
 });
+
+router.post('/post/update', Common.loadDocument(Post), function(req, res, next)){
+	
+	
+	
+	
+}
 
 /**
  * Search for posts by specifying the following

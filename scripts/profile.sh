@@ -1,0 +1,3 @@
+#!/bin/bash
+
+curl http://localhost:3000/api/user/profile?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZDAzMmRhMTk1OGZhMTBhNGEzMzBlMyIsImlhdCI6MTQ5MDAzOTUyMX0.vfOkjLCqfzhijuhun_GD7KMzf0wWVljPjdqEu9DYXPY

@@ -15,12 +15,13 @@ router.get('/book/:id', Common.loadDocument(Book), function(req, res){
 /**
  * Create a new book
  */
-router.post('/book/create', function(req, res, next){
+router.put('/book/create', function(req, res, next){
 	var book = new Book({
 		"title": req.body.title,
 		"authors": req.body.authors,
 		"isbn": req.body.isbn,
 		"courses": req.body.courses,
+		"creator": req.user.id
 		//"publishedDate": req.body.date || Date(),
 		//"publisher": req.body.publisher
 	});
@@ -48,11 +49,11 @@ router.get('/book/search/criteria', function(req, res, next){
 		else 
 			res.json(results);
 	}
-	if(req.query.isbn) { // by ISBN
+	if (req.query.isbn) { // by ISBN
 		Book.findByISBN(req.query.isbn, callback);
-	} else if(req.query.title) { // by title
+	} else if (req.query.title) { // by title
 		Book.findByTitle(req.query.title, callback);
-	} else if(req.query.course) { // by course
+	} else if (req.query.course) { // by course
 		Book.findByCourse(req.query.course, callback);
 	} else {
 		res.json();

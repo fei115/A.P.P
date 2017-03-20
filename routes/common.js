@@ -6,17 +6,18 @@ var mongoose = require('mongoose');
  */
 function loadDocument(model) {
   return function(req, res, next) {
-	  var objectId = req.params.id;
+	  var objectId = req.params.id || req.body.id || req.body._id;
 	  model.findById(objectId, function(err, doc) {
 		if (err) {
-			next(err);
+			return next(err);
 		}
 		else if (!doc) {
-			next(new Error("Error finding the " + model.modelName));
+			console.log(objectId);
+			return next(new Error("Error finding the " + model.modelName));
 		}
 		else {
 			req.doc = doc;
-			next();
+			return next();
 		}
     });
   }
