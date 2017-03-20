@@ -56,13 +56,17 @@ router.put('/post/create', function(req, res, next){
 	});
 });
 
+/*
 router.post('/post/update', Common.loadDocument(Post), function(req, res, next)){
+	if (req.doc.creator != req.user.id) {
+		next()
+	}
 	
 	
 	
 	
 }
-
+*/
 /**
  * Search for posts by specifying the following
  * 		1. Book object id
