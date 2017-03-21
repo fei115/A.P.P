@@ -1,14 +1,10 @@
-var expressJwt = require('express-jwt');  
 var User = require('../models/user.js');
 var AuthService = require('../services/auth.js');
-var config = require('../config/config.js');
 var fbConfig = require('../config/fb.js');
 
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
-
-var ensureAuthenticated = expressJwt({secret : config.jwtSecretKey});
 
 passport.use(new LocalStrategy({
 		usernameField: 'email'
@@ -36,14 +32,15 @@ passport.use(new LocalStrategy({
 passport.use('facebook', new FacebookStrategy({
   clientID        : fbConfig.appID,
   clientSecret    : fbConfig.appSecret,
-  callbackURL     : fbConfig.callbackUrl
+  callbackURL     : fbConfig.callbackUrl,
+  profileFields: ["id", "birthday", "email", "first_name", "last_name", "gender", "picture.width(200).height(200)"],
 },
  
   // facebook will send back the tokens and profile
   function(access_token, refresh_token, profile, done) {
     // asynchronous
     process.nextTick(function() {
-     
+		
       // find the user in the database based on their facebook id
       User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
  
@@ -65,8 +62,8 @@ passport.use('facebook', new FacebookStrategy({
 				"role": 'User',
 				"facebook": {
 					"id": profile.id,
-					"token": access_token,
-					"email": profile.emails[0].value
+					"token": access_token
+					//"email": profile.emails[0].value  // Facebook API is not return email for some reason, added github issue
 				}
 			});
 			
@@ -83,5 +80,12 @@ passport.use('facebook', new FacebookStrategy({
     });
 }));
 
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 module.exports = passport;

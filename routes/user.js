@@ -26,10 +26,26 @@ router.get('/user/:id', Common.loadDocument(User), function(req, res){
 		res.json(req.doc.toJSON());
 });
 
+router.post('/user/profile/update', function(req, res, next) {
+	console.log(req.user.id)
+	User.findOneAndUpdate(
+		{ _id: req.user.id },
+		{ phone: req.body.phone },
+		{ new: true, runValidators: true },
+		function(err, user) {
+			if (err) {
+				return next(err);
+			} else {
+				res.json(user.toJSON());
+			}
+		}
+	)
+});
+
 /**
  * Return the posts created by the user
  */
-router.get('/user/posts', function(req, res){
+router.get('/user/posts', function(req, res) {
 	var query = Post.find({creator: req.user.id});
 	if(req.query.status)
 		query.where('status').equals(req.query.status);
@@ -50,7 +66,7 @@ router.get('/user/posts', function(req, res){
 /**
  * Return the posts where the exchanger is user.
  */
-router.get('/user/exchanges', function(req, res){
+router.get('/user/exchanges', function(req, res) {
 	var query = Post.find({exchanger: req.user.id});
 	if(req.query.status)
 		query.where('status').equals(req.query.status);
@@ -71,13 +87,13 @@ router.get('/user/exchanges', function(req, res){
 /**
  * Return the books added by the user.
  */
-router.get('/user/books', function(req, res){
+router.get('/user/books', function(req, res) {
 	var query = Book.find({creator: req.user.id});
 	query
 	.lean()
 	.sort('-dateAdded')
 	.exec(function(err, books) {
-		if(err) {
+		if (err) {
 			return next(err);
 		} else {
 			res.json(books);
@@ -88,7 +104,7 @@ router.get('/user/books', function(req, res){
 /**
  * Return the posts in user's interest list
  */
-router.get('/user/interests', function(req, res){
+router.get('/user/interests', function(req, res) {
 	User
 	.findById(req.user.id)
 	.populate('interests.post')
@@ -108,21 +124,18 @@ router.get('/user/interests', function(req, res){
  * Update user's interests to the given list
  */
 router.post('/user/interests/update', function(req, res){
-	var newInterests = req.body.interests
-	
-	User
-	.findById(req.user.id)
-	.populate('interests.post')
-	.select('interests.post')
-	.sort('-interests.dateAdded')
-	.lean()
-	.exec(function(err, user) {
-		if(err) {
-			next(err);
-		} else {
-			res.json(user.interests);
+	User.findOneAndUpdate(
+		{ _id: req.user.id },
+		{ interests: req.body.interests },
+		{ new: true, runValidators: true },
+		function(err, user) {
+			if (err) {
+				return next(err);
+			} else {
+				res.json(user.toJSON());
+			}
 		}
-	});
+	)
 });
 
 

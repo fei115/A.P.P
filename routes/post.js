@@ -5,14 +5,6 @@ var Post = require('../models/post.js');
 var Common = require('./common.js')
 
 /**
- * Get a post by 'id'
- */
-router.get('/post/:id', Common.loadDocument(Post), function(req, res){
-	var doc = req.doc;
-	res.json(doc.toJSON());
-});
-
-/**
  * @deprecated Get all posts from the database
  */
 router.get('/posts', function(req, res){
@@ -26,6 +18,14 @@ router.get('/posts', function(req, res){
 			return res.json(posts);
 		}
 	});
+});
+
+/**
+ * Get a post by 'id'
+ */
+router.get('/post/:id', Common.loadDocument(Post), function(req, res){
+	var doc = req.doc;
+	res.json(doc.toJSON());
 });
 
 /**
@@ -55,7 +55,6 @@ router.put('/post/create', function(req, res, next){
 		}
 	});
 });
-
 /*
 router.post('/post/update', Common.loadDocument(Post), function(req, res, next)){
 	if (req.doc.creator != req.user.id) {

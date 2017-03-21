@@ -5,6 +5,22 @@ var Book = require('../models/book.js')
 var Common = require('./common.js')
 
 /**
+ * Get all books from the database
+ */
+router.get('/books', function(req, res){
+	Book
+	.find()
+	.lean()
+	.exec(function(err, books) {
+		if(err) {
+			return next(err);
+		} else {
+			return res.json(books);
+		}
+	});
+});
+
+/**
  * Get a book by 'id'
  */
 router.get('/book/:id', Common.loadDocument(Book), function(req, res){

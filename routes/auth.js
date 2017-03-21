@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var User = require('../models/user.js');
 var AuthService = require('../services/auth.js');
 var config = require('../config/config.js');
-var passport = require('../middleware/passport.js');
+var passport = require('../middlewares/passport.js');
 
 
 /**
@@ -62,7 +62,7 @@ router.post('/auth/login/local',
  * It will create an user in the database, if this is first time.
  */
 router.get('/auth/login/facebook', 
-	passport.authenticate('facebook', { scope : 'email', session : false }),
+	passport.authenticate('facebook', { scope : ['email', 'public_profile'], session : false }),
 	generateToken
 );
  
@@ -71,10 +71,9 @@ router.get('/auth/login/facebook',
  * Facebook login callback
  */
 router.get('/auth/login/facebook/callback',
-	passport.authenticate('facebook', {
-		successRedirect : '/user/profile',
-		failureRedirect : '/'
-    })
+	passport.authenticate('facebook', { failureRedirect: '/' }),
+    generateToken,
+	respond
 );
 
 /**

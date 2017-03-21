@@ -2,23 +2,22 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
+var favicon = require('serve-favicon');
+var path = require('path')
 
 var mongoose = require('./config/db.js'); 
-var passport = require('./middleware/passport.js');
-var expressJwtAuth = require('./middleware/jwtAuth.js'); 
-
+var passport = require('./middlewares/passport.js');
+var expressJwtAuth = require('./middlewares/jwtAuth.js'); 
+ 
 /* Configuration */
 var port = process.env.PORT || 3000;
 
-/* To parse URL encoded data */
+/* Third Party Middle-wares */
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-
-/* To use morgan to log requests to the console */
 app.use(morgan('dev'));
-
-/* To use passport(handles login) */
 app.use(passport.initialize());
+app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 
 /* Statics */
 app.use('/images', express.static(__dirname + '/writable'));
@@ -30,7 +29,7 @@ var Post = require('./routes/post.js');
 var Auth = require('./routes/auth.js');
 
 /* Protect Routes */
-app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
+//app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
 
 /* Use routes */
 app.use('/api', User);
