@@ -20,7 +20,6 @@ app.use(passport.initialize());
 app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 	
 /* Statics */
-
 app.use('/images', express.static(__dirname + '/public/images'));
 
 /* Routes */

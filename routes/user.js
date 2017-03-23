@@ -10,13 +10,16 @@ var Common = require('./common.js');
 /**
  * Return the user profile
  */
- router.get('/user/profile', function(req, res, next){ 
-	req.params.id = req.user.id;
-	next()
-},	Common.loadDocument(User),
-	function(req, res){
-		res.json(req.doc.toJSON());
-});
+ router.get('/user/profile', 
+	function(req, res, next){ 
+		req.params.id = req.user.id;
+		next()
+	}, 
+	Common.loadDocument(User),
+	function(req, res) {
+		res.json(req.doc.toJSON())
+	}
+);
 
 /**
  *  Updates the user profile
