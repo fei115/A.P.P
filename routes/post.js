@@ -45,8 +45,9 @@ router.put('/post/create', function(req, res, next){
 		"status": 'Open',
 		"type": req.body.type,
 		"exchanger": req.body.exchanger,
-		"dateCreated": Date()
+		"dateCreated": Date.now()
 	});
+	console.log(post);
 	post.save(function(err, doc) {
 		if (err) {
 			next(err);
@@ -124,21 +125,22 @@ router.get('/post/search/criteria', function(req, res, next){
 	}
 });
 
-/*
+
 router.put('/post/report', function(req, res, next){
 	Report
 	.findOne({ reporter: req.user.id, post: req.body.post })
 	.exec(function(err, prevReport) {
 		if (err) {
-			return next(err):
-		} else if (!prevReport) {
-			return next(new Error('User reported post before.'));
-		} else {
-			var report = {
+			return next(err);
+		} //else if (prevReport) {
+			//return next(new Error('User reported post before.'));
+		 else {
+			var report = new Report({
 				reporter: req.user.id,
 				post: req.body.post,
 				reason: req.body.reason || 'Spam'
-			}
+			});
+			console.log(report);
 			report.save(function(err) {
 				if (err) {
 					next(err);
@@ -155,10 +157,11 @@ router.put('/post/report', function(req, res, next){
 										if (err) {
 											return next(err)
 										} else {
-											return res.json({ success: true }});
-										});
-
+											return res.json({ success: true });
+										}
+									});
 								}
+							});
 						} else {
 							console.log("Report Submitted");
 							return res.json({ success: true });
@@ -169,6 +172,5 @@ router.put('/post/report', function(req, res, next){
 		}
 	});
 });
-*/
 
 module.exports = router;

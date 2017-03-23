@@ -12,8 +12,8 @@ var reportSchema = new Schema({
 });
 
 // Ensure foreign key integrity.
-idexists.forPath(reportSchema.path("reporter"));
-idexists.forPath(reportSchema.path("post"));
+//idexists.forPath(reportSchema.path("reporter"));
+//idexists.forPath(reportSchema.path("post"));
 
 // the schema is useless so far
 // we need to create a model using it
