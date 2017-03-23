@@ -10,7 +10,8 @@ var bookSchema = new Schema({
   isbn:          { type: String, index: true, unique: true },
   courses:       { type: [String] },
   creator:       { type: Schema.Types.ObjectId, ref: 'User' },
-  dateAdded:	 { type: Date, default: Date.now, required: true }
+  dateAdded:	 { type: Date, default: Date.now, required: true },
+  thumbnail:     { type: String }
   //publishedDate: Date,
   //publisher:     String
 });

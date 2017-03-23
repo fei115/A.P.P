@@ -18,29 +18,33 @@ app.use(bodyParser.json())
 app.use(morgan('dev'));
 app.use(passport.initialize());
 app.use(favicon(path.join(__dirname,'public','favicon.ico')));
-
+	
 /* Statics */
-app.use('/images', express.static(__dirname + '/writable'));
+
+app.use('/images', express.static(__dirname + '/public/images'));
 
 /* Routes */
 var User = require('./routes/user.js');
 var Book = require('./routes/book.js');
 var Post = require('./routes/post.js');
 var Auth = require('./routes/auth.js');
+var Image = require('./routes/image.js');
 
 /* Protect Routes */
-//app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
+app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
 
 /* Use routes */
 app.use('/api', User);
 app.use('/api', Book);
 app.use('/api', Post);
 app.use('/api', Auth);
+app.use('/api', Image);
 	
 /* An error handling middleware */
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send({success: false, message: err.message });
+  res.status(err.status || 500);
+  res.send({ success: false, message: err.message });
 });
 
 

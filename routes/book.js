@@ -37,9 +37,8 @@ router.put('/book/create', function(req, res, next){
 		"authors": req.body.authors,
 		"isbn": req.body.isbn,
 		"courses": req.body.courses,
-		"creator": req.user.id
-		//"publishedDate": req.body.date || Date(),
-		//"publisher": req.body.publisher
+		"creator": req.user.id,
+		"thumbnail": req.body.thumbnail
 	});
 	book.save(function(err, doc) {
 		if (err) {

@@ -11,7 +11,7 @@ var postSchema = new Schema({
   book: 	   { type: Schema.Types.ObjectId, required: true, ref: 'Book' },
   price:	   { type: Number, min: 0, required: true },
   condition:   { type: Number, min: 0, max: 100, required: true },
-  image:       { type: Buffer },
+  images:      { type: [String] },
   status: 	   { type: String, enum: ['Open', 'Closed', 'On hold'], required: true },
   type: 	   { type: String, enum: ['Selling', 'Buying'], required: true },
   exchanger:   { type: Schema.Types.ObjectId, ref: 'User' },
@@ -19,10 +19,7 @@ var postSchema = new Schema({
 });
 
 // Ensure foreign key integrity.
-idexists.forPath(postSchema.path("creator"), {
-    message: "Creator does not exist."
-});
-
+idexists.forPath(postSchema.path("creator"));
 idexists.forPath(postSchema.path("book"));
 idexists.forPath(postSchema.path("exchanger"));
 
