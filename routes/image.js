@@ -5,7 +5,7 @@ var imageService = require('../services/image.js');
 /**
  * Store the uploaded images in disk
  */
-router.post('/images/upload', imageService.multerUpload().array('images'), function(req, res, next){
+router.put('/images/upload', imageService.multerUpload().array('images'), function(req, res, next){
   console.log(req.files[0]);
   var filenames  = {
 	  imagenames : req.files.map(function(f) { return f.filename;})

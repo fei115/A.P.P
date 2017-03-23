@@ -47,7 +47,6 @@ router.put('/post/create', function(req, res, next){
 		"exchanger": req.body.exchanger,
 		"dateCreated": Date.now()
 	});
-	console.log(post);
 	post.save(function(err, doc) {
 		if (err) {
 			next(err);
@@ -140,7 +139,6 @@ router.put('/post/report', function(req, res, next){
 				post: req.body.post,
 				reason: req.body.reason || 'Spam'
 			});
-			console.log(report);
 			report.save(function(err) {
 				if (err) {
 					next(err);
@@ -157,6 +155,7 @@ router.put('/post/report', function(req, res, next){
 										if (err) {
 											return next(err)
 										} else {
+											console.log("Spam count reach 10. Delete Post!!")
 											return res.json({ success: true });
 										}
 									});
