@@ -23,6 +23,17 @@ function loadDocument(model) {
   }
 }
 
+function respondAsJson(promise, res, next) {
+	promise
+	.then(function(object) {
+		return res.json(object);
+	})
+	.catch(function(err) {
+		return next(err);
+	})
+}
+
 module.exports = {
-	loadDocument
+	loadDocument,
+	respondAsJson
 }

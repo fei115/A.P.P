@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose'); 
 var Post = require('../models/post.js');
 var Report = require('../models/report.js');
-var Common = require('./common.js')
+var Common = require('./util.js')
 
 /**
  * @deprecated Get all posts from the database

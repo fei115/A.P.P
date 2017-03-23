@@ -16,7 +16,7 @@ var userSchema = new Schema({
 		dateAdded:   { type: Date, default: Date.now }
 	}],
 	local:       {
-		email:       { type: String, unique: true },
+		email:       { type: String },
 		password:    { type: String },
 		salt:        { type: String }
 	},

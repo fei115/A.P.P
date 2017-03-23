@@ -1,78 +1,53 @@
 var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose'); 
-var Book = require('../models/book.js')
-var Common = require('./common.js')
+var router = express.Router(); 
+var Book = require('../models/book.js');
+var RouteUtil = require('./util.js');
+var BookService = require('../services/book.js');
+var CommonService = require('../services/common.js');
 
 /**
  * Get all books from the database
  */
-router.get('/books', function(req, res){
-	Book
-	.find()
-	.lean()
-	.exec(function(err, books) {
-		if(err) {
-			return next(err);
-		} else {
-			return res.json(books);
-		}
-	});
+router.get('/books', function(req, res, next) {
+	var promise = CommonService.findAll(Book);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 /**
  * Get a book by 'id'
  */
-router.get('/book/:id', Common.loadDocument(Book), function(req, res){
-	var doc = req.doc;
-	res.json(doc.toJSON());
+router.get('/book/:id', function(req, res, next) {
+	var promise = CommonService.findById(Book, req.params.id);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 /**
  * Create a new book
  */
 router.put('/book/create', function(req, res, next){
-	var book = new Book({
+	var data = {
 		"title": req.body.title,
 		"authors": req.body.authors,
 		"isbn": req.body.isbn,
 		"courses": req.body.courses,
 		"creator": req.user.id,
 		"thumbnail": req.body.thumbnail
-	});
-	book.save(function(err, doc) {
-		if (err) {
-			next(err);
-		}
-		else { 
-			console.log("Book Created Successfully");
-			res.send(doc.toJSON());
-		}
-	});
+	};
+	var promise = CommonService.create(Book, data);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 /**
- * Search a book, currently supports search via
- * 		1. title
- *		2. isbn
- *		3. course number
+ * Search for book(s)
  */
 router.get('/book/search/criteria', function(req, res, next){
-	var callback = function(err, results) {
-		if (err) 
-			next(err);
-		else 
-			res.json(results);
+	var criteria = {
+		isbn: req.query.isbn,
+		title: req.query.title,
+		course: req.query.course
 	}
-	if (req.query.isbn) { // by ISBN
-		Book.findByISBN(req.query.isbn, callback);
-	} else if (req.query.title) { // by title
-		Book.findByTitle(req.query.title, callback);
-	} else if (req.query.course) { // by course
-		Book.findByCourse(req.query.course, callback);
-	} else {
-		res.json();
-	}
+	var promise = BookService.search(criteria)
+	RouteUtil.respondAsJson(promise, res, next)
 });
 
 module.exports = router;

@@ -16,17 +16,17 @@ var bookSchema = new Schema({
   //publisher:     String
 });
 
-bookSchema.statics.findByTitle = function(input, cb) {
-	return this.find({ title: new RegExp(input, "i")}).lean().exec(cb);
+bookSchema.statics.findByTitle = function(input) {
+	return this.find({ title: new RegExp(input, "i")}).lean().exec();
 };
 
-bookSchema.statics.findByISBN = function(input, cb) {
-    return this.findOne({ isbn: input }).lean().exec(cb);
+bookSchema.statics.findByISBN = function(input) {
+    return this.findOne({ isbn: input }).lean().exec();
 };
 
-bookSchema.statics.findByCourse = function(input, cb) {
+bookSchema.statics.findByCourse = function(input) {
 	console.log(input);
-    return this.find({ courses: { $in : [new RegExp(input, "i")] }}).lean().exec(cb);
+    return this.find({ courses: { $in : [new RegExp(input, "i")] }}).lean().exec();
 };
 
 // Ensure foreign key integrity.

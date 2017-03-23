@@ -4,39 +4,27 @@ var router = express.Router();
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Book = require('../models/book.js');
-var Common = require('./common.js');
+var RouteUtil = require('./util.js');
+var BookService = require('../services/book.js');
+var CommonService = require('../services/common.js');
 
 
 /**
  * Return the user profile
  */
- router.get('/user/profile', 
-	function(req, res, next){ 
-		req.params.id = req.user.id;
-		next()
-	}, 
-	Common.loadDocument(User),
-	function(req, res) {
-		res.json(req.doc.toJSON())
-	}
-);
+ router.get('/user/profile', function(req, res, next){ 
+	var promise = CommonService.findById(User, req.user.id);
+	RouteUtil.respondAsJson(promise, res, next);
+});
 
 /**
  *  Updates the user profile
  */
 router.post('/user/profile/update', function(req, res, next) {
-	User.findOneAndUpdate(
-		{ _id: req.user.id },
-		{ phone: req.body.phone },
-		{ new: true, runValidators: true },
-		function(err, user) {
-			if (err) {
-				return next(err);
-			} else {
-				res.json(user.toJSON());
-			}
-		}
-	)
+	var query = { _id: req.user.id };
+	var data = { phone: req.body.phone };
+	var promise = CommonService.findOneAndUpdate(User, query, data);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 /**
