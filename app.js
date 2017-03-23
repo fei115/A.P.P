@@ -31,7 +31,7 @@ var Auth = require('./routes/auth.js');
 var Image = require('./routes/image.js');
 
 /* Protect Routes */
-app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
+//app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
 
 /* Use routes */
 app.use('/api', User);
