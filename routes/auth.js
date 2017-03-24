@@ -58,37 +58,11 @@ router.post('/auth/login/local',
 );
 
 /**
- * Login an user using Facebook
- * It will create an user in the database, if this is first time.
- */
-router.get('/auth/login/facebook', 
-	passport.authenticate('facebook', { scope : ['email', 'public_profile'], session : false }),
-	generateToken
-);
-
-/**
  * Login an user using Facebook access_token
  * It will create an user in the database, if this is first time.
  */
-router.get('/auth/login/facebook-token',
+router.get('/auth/login/facebook',
 	passport.authenticate('facebook-token'),
-    generateToken,
-	respond
-);
-
-/**
- * Login an user using Facebook 
- * It will create an user in the database, if this is first time.
- */
-router.get('/auth/login/facebook', 
-	passport.authenticate('facebook', { scope : ['email', 'public_profile'], session : false })
-);
-
-/**
- * Facebook login callback
- */
-router.get('/auth/login/facebook/callback',
-	passport.authenticate('facebook', { failureRedirect: '/' }),
     generateToken,
 	respond
 );
@@ -100,7 +74,6 @@ router.get('/auth/login/facebook/callback',
  * performance.
  */
  
-
 function generateToken(req, res, next) {  
 	req.token = jwt.sign({ id: req.user.id }, config.jwtSecretKey);
 	return next();
