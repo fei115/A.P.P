@@ -1,17 +1,15 @@
 // Bring Mongoose into the app 
 var mongoose = require( 'mongoose' ); 
-
-// Build the connection string 
-var dbURI = 'mongodb://admin:1171CS446@ds157529.mlab.com:57529/eztextbook';
+var config = require('./config.js')
 
 // Create the database connection 
-mongoose.Promise = global.Promise; // Avoid deprecation warning.
-mongoose.connect(dbURI); 
+mongoose.Promise = global.Promise;
+mongoose.connect(config.db.URI); 
 
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', function () {  
-  console.log('Mongoose default connection open to ' + dbURI);
+  console.log('Mongoose default connection open to ' + config.db.URI);
 }); 
 
 // If the connection throws an error

@@ -1,6 +1,6 @@
 var User = require('../models/user.js');
 var AuthService = require('../services/auth.js');
-var fbConfig = require('../config/fb.js');
+var config = require('../config/config.js');
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookTokenStrategy = require('passport-facebook-token');
@@ -31,8 +31,8 @@ passport.use(new LocalStrategy({
 
 /* Facebook access token Strategy */
 passport.use(new FacebookTokenStrategy({
-        clientID: fbConfig.appID,
-        clientSecret: fbConfig.appSecret,
+        clientID: config.facebook.appID,
+        clientSecret: config.facebook.appSecret,
     },
     function (accessToken, refreshToken, profile, done) {
         User.findOne({ 'facebook.id': profile.id }, function (err, user) {

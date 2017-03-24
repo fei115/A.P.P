@@ -2,7 +2,7 @@ var expressJwt = require('express-jwt');
 var config = require('../config/config.js');
 
 module.exports = expressJwt({
-  secret: config.jwtSecretKey,
+  secret: config.jwt.secretKey,
   credentialsRequired: true,
   getToken: function fromHeaderOrQuerystring (req) {
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {

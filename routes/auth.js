@@ -33,7 +33,7 @@ router.get('/auth/login/facebook',
 );
  
 function generateToken(req, res, next) {  
-	req.token = authService.genJWToken(req.user.id);
+	req.token = AuthService.genJWToken(req.user.id);
 	return next();
 }
 
