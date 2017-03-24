@@ -77,9 +77,27 @@ function findOneAndUpdate(model, query, data, opt) {
 	});
 }
 
+function remove(model, query) {
+	return model
+	.remove(query)
+	.exec()
+	.then(function(removed) {
+		if (removed.result.n == 0) {
+			throw new Error('Cannot delete because the given ' + model.modelName + ' does not exists.');
+		} else {
+			var message = removed.result.n + ' ' + model.modelName + ' deleted.';
+			return { success: true, message: message }
+		}
+	})
+	.catch(function(err) {
+		throw err;
+	});
+}
+
 module.exports = {
 	findById,
 	findAll,
 	create,
-	findOneAndUpdate
+	findOneAndUpdate,
+	remove
 }

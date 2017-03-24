@@ -15,8 +15,6 @@ var bookSchema = new Schema({
   creator:       { type: Schema.Types.ObjectId, ref: 'User' },
   dateAdded:	 { type: Date, default: Date.now, required: true },
   thumbnail:     { type: String }
-  //publishedDate: Date,
-  //publisher:     String
 });
 
 

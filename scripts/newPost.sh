@@ -3,9 +3,8 @@
 curl -H "Content-Type: application/json" -X PUT -d '{
 	"title": "Sell CS446 Textbook",
 	"description": "With assignments + exams",
-	"book": "58d2e8ba4ec3a00f1cfa65bf",
+	"book": "58d48d481dc463251cd57850",
 	"price": 20,
 	"condition": 95,
-	"type": "Selling",
-	"exchanger": "58d3e14c4e37fa0004cc71e1"
-}' http://localhost:3000/api/post/create?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZDNlMTRjNGUzN2ZhMDAwNGNjNzFlMSIsImlhdCI6MTQ5MDI4NjQ4M30.miLJ-HQB9RCdvzl8XtqB7I0I2wk709nqUXsajA6BQgE
+	"type": "Selling"
+}' http://localhost:3000/api/post/create?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZDRhOWI2Y2E2Y2ZjMjEwMDA0MjgyZSIsImlhdCI6MTQ5MDM2MjYwMX0.a4riUYx60KurNG75avSpZyqaBgJ0tMEH53k19noyZWY

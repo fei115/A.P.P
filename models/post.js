@@ -15,7 +15,7 @@ var postSchema = new Schema({
   status: 	   { type: String, enum: ['Open', 'Closed', 'On hold'], required: true },
   type: 	   { type: String, enum: ['Selling', 'Buying'], required: true },
   exchanger:   { type: Schema.Types.ObjectId, ref: 'User' },
-  dateCreated: { type: Date, required: true }
+  dateCreated: { type: Date, default: Date.now, required: true }
 });
 
 // Ensure foreign key integrity.

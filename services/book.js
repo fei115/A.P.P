@@ -1,5 +1,13 @@
 var Book = require('../models/book.js')
+var CommonService = require('./common.js');
 
+/**
+ * Update a book. It uses ISBN instead of _id as the identifier
+ */
+function update(userId, data) {
+	var query = { creator: userId, isbn: data.isbn };
+	return CommonService.findOneAndUpdate(Book, query, data);	
+}
 /**
  * Search a book, currently supports search via
  * 		1. title
@@ -19,5 +27,6 @@ function search(criteria) {
 }
 
 module.exports = {
+	update,
 	search
 }

@@ -25,17 +25,7 @@ router.get('/book/:id', function(req, res, next) {
  * Create a new book
  */
 router.put('/book/create', function(req, res, next){
-	var data = {
-		"title": req.body.title,
-		"authors": req.body.authors,
-		"isbn": req.body.isbn,
-		"courses": req.body.courses,
-		"amazon": req.body.amazon,
-		"uwbook": req.body.uwbook,
-		"feds": req.body.feds,
-		"creator": req.user.id,
-		"thumbnail": req.body.thumbnail
-	};
+	req.body.creator = req.user.id;
 	var promise = CommonService.create(Book, data);
 	RouteUtil.respondAsJson(promise, res, next);
 });
@@ -44,21 +34,8 @@ router.put('/book/create', function(req, res, next){
  * Update book
  */
  router.post('/book/update', function(req, res, next) {
-	var bookModel = new Book(req.body);
-	Book.findOneAndUpdate(
-		{ isbn: req.body.isbn },
-		bookModel,
-		{ new: true, runValidators: true },
-		function(err, book) {
-			if (err) {
-				return next(err);
-			} else if (!book) {
-				return next(new Error('The given book does not exists.'));
-			} else {
-				return res.json(book.toJSON());
-			}
-		}
-	)
+	var promise = BookService.update(req.user.id, req.body);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 
@@ -66,12 +43,7 @@ router.put('/book/create', function(req, res, next){
  * Search for book(s)
  */
 router.get('/book/search/criteria', function(req, res, next){
-	var criteria = {
-		isbn: req.query.isbn,
-		title: req.query.title,
-		course: req.query.course,
-	}
-	var promise = BookService.search(criteria)
+	var promise = BookService.search(req.query)
 	RouteUtil.respondAsJson(promise, res, next)
 });
 

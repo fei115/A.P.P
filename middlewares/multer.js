@@ -3,10 +3,12 @@ var multer = require('multer');
 var authService = require('../services/auth.js');
 var imagesPath = 'public/images/';
 
-function multerUpload(storage) {
-	return multer({ 
-		storage: storage || defaultStorage() 
-	});
+function multerUpload(storageType) {
+	if (storageType === 'Disk') {
+		return multer({ storage: diskStorage() })
+	} else {
+		return multer({ storage: defaultStorage() })
+	}
 };
 
 function defaultStorage() {
@@ -28,6 +30,4 @@ function diskStorage(path) {
 	return storage;
 };
 
-module.exports = {
-	multerUpload
-}
+module.exports = multerUpload
