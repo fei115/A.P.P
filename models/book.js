@@ -9,12 +9,18 @@ var bookSchema = new Schema({
   authors:       { type: [String] },
   isbn:          { type: String, index: true, unique: true },
   courses:       { type: [String] },
+  amazon:        { type: Number, min: 0, default: 0 },
+  uwbook:        { type: Number, min: 0, default: 0 },
+  feds:          { type: Number, min: 0, default: 0 },
   creator:       { type: Schema.Types.ObjectId, ref: 'User' },
   dateAdded:	 { type: Date, default: Date.now, required: true },
   thumbnail:     { type: String }
   //publishedDate: Date,
   //publisher:     String
 });
+
+
+
 
 bookSchema.statics.findByTitle = function(input) {
 	return this.find({ title: new RegExp(input, "i")}).lean().exec();
