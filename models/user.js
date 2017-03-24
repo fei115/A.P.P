@@ -12,6 +12,7 @@ var userSchema = new Schema({
 	role:        { type: String, enum: ['Admin', 'User'], required: true, default: 'User'},
 	verified:    { type: Boolean, required: true, default: false},
 	interests:   [{ 
+		_id:         false,
 		post:		 { type: Schema.Types.ObjectId, ref: 'Post' },
 		dateAdded:   { type: Date, default: Date.now }
 	}],
@@ -24,7 +25,8 @@ var userSchema = new Schema({
 		id:          { type: String },
 		token:       { type: String },
 		email:       { type: String },
-	}
+	},
+	avatar:      { type: String }
 }); // consider adding pre-save middlewares to ensure local & facebook contains no empty field
 
 userSchema.methods.validPassword = function( pwd ) {

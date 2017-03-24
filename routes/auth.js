@@ -65,7 +65,24 @@ router.get('/auth/login/facebook',
 	passport.authenticate('facebook', { scope : ['email', 'public_profile'], session : false }),
 	generateToken
 );
- 
+
+/**
+ * Login an user using Facebook access_token
+ * It will create an user in the database, if this is first time.
+ */
+router.get('/auth/login/facebook-token',
+	passport.authenticate('facebook-token'),
+    generateToken,
+	respond
+);
+
+/**
+ * Login an user using Facebook 
+ * It will create an user in the database, if this is first time.
+ */
+router.get('/auth/login/facebook', 
+	passport.authenticate('facebook', { scope : ['email', 'public_profile'], session : false })
+);
 
 /**
  * Facebook login callback

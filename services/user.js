@@ -4,6 +4,9 @@ var Book = require('../models/book.js');
 
 var CommonService = require('./common.js');
 
+function myProfile(userId) {
+	return CommonService.findById(User, userId);
+}
 /**
  *  Updates the user profile
  *  Only updates phone, first name and last name.
@@ -18,7 +21,6 @@ function updateProfile(userId, profile) {
 	console.log(query);
 	console.log(data);
 	return CommonService.findOneAndUpdate(User, query, data);
-	
 }
 
 /**
@@ -116,18 +118,40 @@ function updateInterests(userId, interests) {
  * Does not add duplicates.
  */
 function addInterest(userId, postId) {
-	var userPromise = CommonService.findById(User, userId, { json: false })
-	return userPromise
-	.then(function(user) {
-		if (user.interests.some(function(e) { e.post === postId; })) {
-			throw new Error('The selected post already exists');
-		} else {
-			user.interests.push({ post: postId });
-			return user.save();
-		}
-	})
+	var query = { _id: userId, 'interests.post': {$ne: postId} }
+	var update = {$push: {interests: { post: postId }}}
+	return CommonService
+	.findOneAndUpdate(User, query, update)
 	.then(function(user) {
 		return user.interests;
+	})
+	.catch(function(err) {
+		throw err;
+	})
+}
+
+function deleteInterest(userId, postId) {
+	var query = { _id: userId };
+	var update = { $pull: { interests: { post: postId }}};
+	return CommonService
+	.findOneAndUpdate(User, query, update)
+	.then(function(user) {
+		return user.interests;
+	})
+	.catch(function(err) {
+		throw err;
+	})
+}
+
+function visitProfile(userId) {
+	return User
+	.findById(userId)
+	.select('firstname lastname phone rating local.email facebook.email avatar')
+	.lean()
+	.exec()
+	.then(function(user){
+		console.log(user);
+		return user;
 	})
 	.catch(function(err) {
 		throw err;
@@ -141,5 +165,7 @@ module.exports = {
 	myBooks,
 	myInterests,
 	updateInterests,
-	addInterest
+	addInterest,
+	deleteInterest,
+	visitProfile
 }

@@ -5,7 +5,9 @@ var fbConfig = require('../config/fb.js');
 var passport = require('passport')
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var FacebookTokenStrategy = require('passport-facebook-token');
 
+/* Local Strategy */
 passport.use(new LocalStrategy({
 		usernameField: 'email'
 	},
@@ -29,6 +31,33 @@ passport.use(new LocalStrategy({
     }
 ));
 
+/* Facebook access token Strategy */
+passport.use(new FacebookTokenStrategy({
+    clientID: fbConfig.appID,
+    clientSecret: fbConfig.appSecret,
+  }, 
+  function(accessToken, refreshToken, profile, done) {
+		var query = { 'facebook.id' : profile.id };
+		var update = new User({
+			"firstname": profile.name.givenName,
+			"lastname": profile.name.familyName,
+			"rating": 0,
+			"verified": true, 
+			"role": 'User',
+			"facebook": {
+				"id": profile.id,
+				"token": access_token
+				//"email": profile.emails[0].value  // Facebook API is not returning email for some reason, added github issue
+			}
+		});
+		var options = { upsert: true, new: true, setDefaultsOnInsert: true };
+		User.findOneAndUpdate(query, update, options, function(error, user) {
+			return done(error, user);
+		});
+	
+}));
+
+/* Facebook Strategy */
 passport.use('facebook', new FacebookStrategy({
   clientID        : fbConfig.appID,
   clientSecret    : fbConfig.appSecret,

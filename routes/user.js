@@ -1,21 +1,13 @@
 var express = require('express');
 var router = express.Router();
-
-var User = require('../models/user.js');
-var Post = require('../models/post.js');
-var Book = require('../models/book.js');
 var RouteUtil = require('./util.js');
-
-var BookService = require('../services/book.js');
 var UserService = require('../services/user.js');
-var CommonService = require('../services/common.js');
-
 
 /**
  * Return the user profile
  */
  router.get('/user/profile', function(req, res, next) { 
-	var promise = CommonService.findById(User, req.user.id);
+	var promise = UserService.myProfile(req.user.id);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
@@ -71,7 +63,7 @@ router.post('/user/interests/update', function(req, res, next){
  * Add the given post to user's interests
  */
 router.post('/user/interests/add', function(req, res, next){
-	var promise = UserService.addInterst(req.user.id, req.body.post);
+	var promise = UserService.addInterest(req.user.id, req.body.post);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
@@ -79,34 +71,16 @@ router.post('/user/interests/add', function(req, res, next){
  * Delete the given post from user's interests
  */
 router.post('/user/interests/delete', function(req, res, next){
-	User.update( 
-		{ _id : req.user.id },
-		{ $pullAll: { 'interests.post' : [req.body.post] }},
-		function(err) {
-			return next(err);
-		}
-	);
+	var promise = UserService.deleteInterest(req.user.id, req.body.post)
+	RouteUtil.respondAsJson(promise, res, next);
 });
 			
-
+/**
+ * Return a profile in visitor view
+ */
 router.get('/user/visit/profile/:id', function(req, res, next){
-	User
-	.findById(req.params.id)
-	.select('firstname lastname phone rating local.email facebook.email')
-	.lean()
-	.exec(function(err, user) {
-		if (err) {
-			return next(err)
-		} else {
-			profile = {}
-			profile.firstname = user.firstname;
-			profile.lastname = user.lastname;
-			profile.phone = user.phone;
-			profile.rating = user.rating;
-			profile.email = local.email || facebook.email;
-			return res.json(profile);
-		}
-	});
+	var promise = UserService.visitProfile(req.params.id)
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 module.exports = router;	
