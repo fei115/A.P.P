@@ -1,5 +1,5 @@
 'use strict';
-/*
+
 var nodemailer = require('nodemailer');
 var config = require('../config/config.js');
 
@@ -14,15 +14,14 @@ var transporter = nodemailer.createTransport({
 
 function sendMail(mailOptions) {
 	transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return error;
-    } else {
-		return { success: true, message: 'Email sent' };
-	}
-});
+		if (error) {
+			return error;
+		} else {
+			return { success: true, message: 'Email sent' };
+		}
+	})
+};
 
 module.exports = {
 	sendMail
 }
-
-*/

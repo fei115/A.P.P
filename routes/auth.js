@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 var RouteUtil = require('./util.js');
 var AuthService = require('../services/auth.js');
-var EmailService = require('../services/mailer.js')
 var passport = require('../middlewares/passport.js');
 
 /**
@@ -35,13 +34,14 @@ router.get('/auth/login/facebook',
 	respond
 );
  
- 
 /**
- * Send confirmation code
+ * Send confirmation email
  */
-router.get('/auth/login/code', function(req, res) {
-	EmailService.sendMail();
-	res.json({});
+router.post('/auth/email/confirm',
+	passport.authenticate('local', { session: false }),
+	function(req, res, next) {
+		var result = AuthService.sendEmailConfirmation(req.user);
+		RouteUtil.respond(result, res, next);
 });
 
 function generateToken(req, res, next) {  

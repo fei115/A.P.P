@@ -3,9 +3,11 @@
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Book = require('../models/book.js');
-
 var CommonService = require('./common.js');
 
+/**
+ * Returns the complete profile of a user 
+ */
 function myProfile(userId) {
 	return CommonService.findById(User, userId);
 }
@@ -130,6 +132,9 @@ function addInterest(userId, postId) {
 	})
 }
 
+/**
+ * Delete `postId` from user's interests
+ */
 function deleteInterest(userId, postId) {
 	var query = { _id: userId };
 	var update = { $pull: { interests: { post: postId }}};
@@ -143,6 +148,9 @@ function deleteInterest(userId, postId) {
 	})
 }
 
+/**
+ * Return the profile of a user in visitor mode 
+ */
 function visitProfile(userId) {
 	return User
 	.findById(userId)

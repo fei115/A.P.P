@@ -1,5 +1,13 @@
 "use strict";
 
+function respond(result, res, next) {
+	if (result instanceof Error) {
+		return next(result);
+	} else {
+		return res.json(result);
+	}
+}
+
 function respondAsJson(promise, res, next) {
 	promise
 	.then(function(object) {
@@ -11,5 +19,6 @@ function respondAsJson(promise, res, next) {
 }
 
 module.exports = {
+	respond,
 	respondAsJson
 }

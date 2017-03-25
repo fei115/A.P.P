@@ -2,9 +2,9 @@
 
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var config = require('../config/config.js');
 var User = require('../models/user.js');
-//var MailService = require('./mail.js');
+var config = require('../config/config.js');
+var MailService = require('./mail.js');
 
 /**
  * Sign up through email/local
@@ -45,19 +45,29 @@ function signup(profile) {
 	});
 }
 
-/*
+/**
+ * Send an confirmation code to the email of `locailUser`
+ */
 function sendEmailConfirmation(localUser) {
+	console.log(localUser);
 	if (localUser.verified) {
 		return new Error('User already verified');
 	} else if (!localUser.local || !localUser.local.email) {
 		return new Error('User must be a `local` user');
 	} else {
-		verified
+		var code = randomInt(10000, 100000);
+		var mailOptions = {
+			to: localUser.local.email,
+			subject: 'EZTextbook Email Verification',
+			html: '<b>' + code + '</b>' // html body
+		};
+		console.log('i am here');
+		return MailService.sendMail(mailOptions);
 	}
 }
-*/
+
 /**
- * generates a json web token for `userId`
+ * generates a JSON web token for `userId`
  */
 function genJWToken(userId) {
 	return jwt.sign({ id: userId }, config.jwt.secretKey);
@@ -98,6 +108,7 @@ function hashPassword(password, salt){
 
 module.exports = {
 	signup,
+	sendEmailConfirmation,
 	genJWToken,
 	randomInt,
 	genRandomString,
