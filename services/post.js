@@ -5,6 +5,24 @@ var Report = require('../models/report.js')
 var CommonService = require('./common.js');
 
 /**
+ * Find all posts
+ */
+function findAll(type) {
+	var query = Post.find();
+	if (type) {
+		query.where('type').equals(type);
+	}
+	return query
+	.exec()
+	.then(function(posts) {
+		return posts;
+	})
+	.catch(function(err) {
+		throw err;
+	});
+}
+
+/**
  * Create a new post
  */
 function create(userId, data) {
@@ -107,6 +125,7 @@ function deletePostAndReports(postId) {
 }
 
 module.exports = {
+	findAll,
 	create,
 	update,
 	remove,

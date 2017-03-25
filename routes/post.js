@@ -12,7 +12,7 @@ var CommonService = require('../services/common.js');
  * Get all posts from the database
  */
 router.get('/posts', function(req, res, next) {
-	var promise = CommonService.findAll(Post);
+	var promise = PostService.findAll(req.query.type);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
