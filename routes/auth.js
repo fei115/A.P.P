@@ -1,7 +1,10 @@
+"use strict";
+
 var express = require('express');
 var router = express.Router();
 var RouteUtil = require('./util.js');
 var AuthService = require('../services/auth.js');
+var EmailService = require('../services/mailer.js')
 var passport = require('../middlewares/passport.js');
 
 /**
@@ -32,26 +35,36 @@ router.get('/auth/login/facebook',
 	respond
 );
  
+ 
+/**
+ * Send confirmation code
+ */
+router.get('/auth/login/code', function(req, res) {
+	EmailService.sendMail();
+	res.json({});
+});
+
 function generateToken(req, res, next) {  
 	req.token = AuthService.genJWToken(req.user.id);
 	return next();
 }
 
 function respond(req, res) {  
-	res.status(200).json({
+	return res.status(200).json({
 		user: req.user,
 		token: req.token
 	});
 }
 
 function verified(req, res, next) {
-	if(req.user.verified)
+	if(req.user.verified) {
 		return next()
-	else
-		res.status(401).json({
+	} else {
+		return res.status(401).json({
 			success: false,
 			message: "E-mail verification is required."
 		});
+	}
 }
 
 module.exports = router;

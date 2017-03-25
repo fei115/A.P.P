@@ -1,3 +1,5 @@
+"use strict";
+
 var mime = require('mime');
 var multer = require('multer');
 var authService = require('../services/auth.js');

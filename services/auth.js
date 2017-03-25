@@ -1,7 +1,10 @@
-var User = require('../models/user.js');
+"use strict";
+
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var config = require('../config/config.js');
+var User = require('../models/user.js');
+//var MailService = require('./mail.js');
 
 /**
  * Sign up through email/local
@@ -42,11 +45,32 @@ function signup(profile) {
 	});
 }
 
+/*
+function sendEmailConfirmation(localUser) {
+	if (localUser.verified) {
+		return new Error('User already verified');
+	} else if (!localUser.local || !localUser.local.email) {
+		return new Error('User must be a `local` user');
+	} else {
+		verified
+	}
+}
+*/
 /**
  * generates a json web token for `userId`
  */
 function genJWToken(userId) {
-	return jwt.sign({ id: userId }, config.jwtSecretKey);
+	return jwt.sign({ id: userId }, config.jwt.secretKey);
+}
+
+/**
+ * generates random integer between low (inclusive) and high (exclusive)
+ * @function
+ * @param {integer} low - The lower bound
+ * @param {integer} high - The upper bound
+ */
+function randomInt (low, high) {
+    return Math.floor(Math.random() * (high - low) + low);
 }
 
 /**
@@ -74,6 +98,8 @@ function hashPassword(password, salt){
 
 module.exports = {
 	signup,
+	genJWToken,
+	randomInt,
 	genRandomString,
 	hashPassword
 }

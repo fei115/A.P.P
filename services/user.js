@@ -1,3 +1,5 @@
+"use strict";
+
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Book = require('../models/book.js');
@@ -18,8 +20,6 @@ function updateProfile(userId, profile) {
 		data.firstname = profile.firstname;
 	if (profile.lastname && profile.lastname.length > 0)
 		data.lastname = profile.lastname;
-	console.log(query);
-	console.log(data);
 	return CommonService.findOneAndUpdate(User, query, data);
 }
 
@@ -150,7 +150,6 @@ function visitProfile(userId) {
 	.lean()
 	.exec()
 	.then(function(user){
-		console.log(user);
 		return user;
 	})
 	.catch(function(err) {

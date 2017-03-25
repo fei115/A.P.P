@@ -17,9 +17,6 @@ var bookSchema = new Schema({
   thumbnail:     { type: String }
 });
 
-
-
-
 bookSchema.statics.findByTitle = function(input) {
 	return this.find({ title: new RegExp(input, "i")}).lean().exec();
 };
@@ -29,7 +26,6 @@ bookSchema.statics.findByISBN = function(input) {
 };
 
 bookSchema.statics.findByCourse = function(input) {
-	console.log(input);
     return this.find({ courses: { $in : [new RegExp(input, "i")] }}).lean().exec();
 };
 

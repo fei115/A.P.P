@@ -1,4 +1,4 @@
-var mongoose = require('mongoose'); 
+"use strict";
 
 function respondAsJson(promise, res, next) {
 	promise

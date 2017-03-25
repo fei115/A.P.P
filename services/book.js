@@ -1,3 +1,5 @@
+"use strict";
+
 var Book = require('../models/book.js')
 var CommonService = require('./common.js');
 

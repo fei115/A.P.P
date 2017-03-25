@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 var reportSchema = new Schema({
   reporter:      { type: Schema.Types.ObjectId, required: true, ref: 'User' },
   post:          { type: Schema.Types.ObjectId, required: true, ref: 'Post' },
-  reason:        { type: String },
+  reason:        { type: String, require: true },
   dateSubmitted: { type: Date, default: Date.now, required: true }
 });
 

@@ -1,3 +1,5 @@
+"use strict";
+
 var User = require('../models/user.js');
 var AuthService = require('../services/auth.js');
 var config = require('../config/config.js');

@@ -1,3 +1,5 @@
+"use strict";
+
 var Post = require('../models/post.js')
 var Report = require('../models/report.js')
 var CommonService = require('./common.js');
@@ -8,7 +10,6 @@ var CommonService = require('./common.js');
 function create(userId, data) {
 	data.creator = userId;
 	data.status = 'Open';
-	console.log(data);
 	return CommonService.create(Post, data);
 }
 
@@ -101,7 +102,7 @@ function deletePostAndReports(postId) {
 		return CommonService.remove(Post, { _id: postId });
 	})
 	.catch(function(err) {
-			throw err;
+		throw err;
 	});
 }
 

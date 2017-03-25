@@ -1,3 +1,5 @@
+"use strict";
+
 /**
  * Find a doc of type 'model' using 'findById'
  * Uses lean() unless opt.json is specified as false
