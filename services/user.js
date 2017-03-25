@@ -166,6 +166,7 @@ function visitProfile(userId) {
 }
 
 module.exports = {
+	myProfile,
 	updateProfile,
 	myPosts,
 	myExchanges,

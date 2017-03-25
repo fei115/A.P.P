@@ -49,7 +49,6 @@ function signup(profile) {
  * Send an confirmation code to the email of `locailUser`
  */
 function sendEmailConfirmation(localUser) {
-	console.log(localUser);
 	if (localUser.verified) {
 		return new Error('User already verified');
 	} else if (!localUser.local || !localUser.local.email) {

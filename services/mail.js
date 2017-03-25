@@ -12,15 +12,9 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-function sendMail(mailOptions) {
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			return error;
-		} else {
-			return { success: true, message: 'Email sent' };
-		}
-	})
-};
+function sendMail(mailOptions, cb) {
+	transporter.sendMail(mailOptions, cb);
+}
 
 module.exports = {
 	sendMail
