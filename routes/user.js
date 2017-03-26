@@ -48,7 +48,7 @@ router.get('/user/books', function(req, res, next) {
 /**
  * Return the posts in user's interest list
  */
-router.get('/user/interests', function(req, res, next){
+router.get('/user/interests', function(req, res, next) {
 	var promise = UserService.myInterests(req.user.id);
 	RouteUtil.respondAsJson(promise, res, next);
 });
@@ -56,7 +56,7 @@ router.get('/user/interests', function(req, res, next){
 /**
  * Update user's interests to the given list
  */
-router.post('/user/interests/update', function(req, res, next){
+router.post('/user/interests/update', function(req, res, next) {
 	var promise = UserService.updateInterests(req.user.id, req.body.interests);
 	RouteUtil.respondAsJson(promise, res, next);
 });
@@ -64,7 +64,7 @@ router.post('/user/interests/update', function(req, res, next){
 /**
  * Add the given post to user's interests
  */
-router.post('/user/interests/add', function(req, res, next){
+router.post('/user/interests/add', function(req, res, next) {
 	var promise = UserService.addInterest(req.user.id, req.body.post);
 	RouteUtil.respondAsJson(promise, res, next);
 });
@@ -72,17 +72,25 @@ router.post('/user/interests/add', function(req, res, next){
 /**
  * Delete the given post from user's interests
  */
-router.post('/user/interests/delete', function(req, res, next){
-	var promise = UserService.deleteInterest(req.user.id, req.body.post)
+router.post('/user/interests/delete', function(req, res, next) {
+	var promise = UserService.deleteInterest(req.user.id, req.body.post);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 			
 /**
  * Return a profile in visitor view
  */
-router.get('/user/visit/profile/:id', function(req, res, next){
-	var promise = UserService.visitProfile(req.params.id)
+router.get('/user/visit/profile/:id', function(req, res, next) {
+	var promise = UserService.visitProfile(req.params.id);
 	RouteUtil.respondAsJson(promise, res, next);
 });
+
+/**
+ * Rate another user
+ */
+ router.put('/user/visit/rate', function(req, res, next ) {
+	var promise = UserService.rateUser(req.user.id, req.body);
+	RouteUtil.respondAsJson(promise, res, next);
+ });
 
 module.exports = router;	

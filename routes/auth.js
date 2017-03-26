@@ -41,7 +41,6 @@ router.post('/auth/email/confirm',
 	passport.authenticate('local', { session: false }),
 	function(req, res, next) {
 		var result = AuthService.sendEmailConfirmation(req.user);
-		console.log(result);
 		RouteUtil.respond(result, res, next);
 });
 
