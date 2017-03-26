@@ -161,7 +161,7 @@ function deleteInterest(userId, postId) {
 function visitProfile(userId) {
 	return User
 	.findById(userId)
-	.select('firstname lastname phone rating local.email facebook.email avatar')
+	.select('firstname lastname phone local.email facebook.email avatar')
 	.lean()
 	.exec()
 	.then(function(user){

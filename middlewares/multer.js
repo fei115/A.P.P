@@ -3,7 +3,7 @@
 var mime = require('mime');
 var multer = require('multer');
 var authService = require('../services/auth.js');
-var imagesPath = 'public/images/';
+var imagesPath = './public/images/';
 
 function multerUpload(storageType) {
 	if (storageType === 'Disk') {
