@@ -9,18 +9,7 @@ var CommonService = require('./common.js');
  * Find all posts
  */
 function findAll(type) {
-	var query = Post.find();
-	if (type) {
-		query.where('type').equals(type);
-	}
-	return query
-	.exec()
-	.then(function(posts) {
-		return posts;
-	})
-	.catch(function(err) {
-		throw err;
-	});
+	return search({ type: type });
 }
 
 /**
@@ -72,28 +61,26 @@ function remove(userId, postId) {
  *		2. [Optional] post type
  */
 function search(criteria) {
-	if (criteria.book) {
-		var query = Post.find({
-			book: criteria.book,
-			status: 'Open'
-		});
-		if(criteria.type) 
-			query.where('type').equals(criteria.type);
-		return query
-		.populate('book')
-		.populate('creator', ['firstname', 'lastname'])
-		.lean()
-		.sort('-dateCreated')
-		.exec()
-		.then(function(posts) {
-			return posts;
-		})
-		.catch(function(err) {
-			throw err;
-		});
-	} else {
-		return Promise.resolve([]);
-	}
+	var query = { status: 'Open' };
+	if (criteria.status)
+		query.status = criteria.status;
+	if (criteria.type)
+		query.type = criteria.type;
+	if (criteria.book)
+		query.book = criteria.book;
+	return Post
+	.find(query)
+	.populate('book')
+	.populate('creator', ['firstname', 'lastname', 'rating'])
+	.lean()
+	.sort('-dateCreated')
+	.exec()
+	.then(function(posts) {
+		return posts;
+	})
+	.catch(function(err) {
+		throw err;
+	})
 }
 
 /**

@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var idexists = require('mongoose-idexists'); 
 var Schema = mongoose.Schema;
 
-// create a schema
 var bookSchema = new Schema({
   title:         { type: String, required: true },
   authors:       { type: [String] },
@@ -31,7 +30,7 @@ bookSchema.statics.findByCourse = function(input) {
 
 // Ensure foreign key integrity.
 idexists.forPath(bookSchema.path("creator"), {
-    message: "Creator does not exist."
+    message: "The given creator does not exist."
 });
 
 // the schema is useless so far

@@ -61,7 +61,8 @@ passport.use(new FacebookTokenStrategy({
                         "id": profile.id,
                         "token": accessToken
                         //"email": profile.emails[0].value  // Facebook API is not return email for some reason, added github issue
-                    }
+                    },
+					"avatar": profile.photo[0].value
                 });
                 userData.save(function (err, newUser) {
                     return done(err, newUser);

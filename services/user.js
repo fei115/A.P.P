@@ -1,18 +1,19 @@
 "use strict";
 
+var mongoose = require('mongoose');
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Book = require('../models/book.js');
 var CommonService = require('./common.js');
 
 /**
- * Returns the complete profile of a user 
+ * Return the complete profile of a user 
  */
 function myProfile(userId) {
 	return CommonService.findById(User, userId);
 }
 /**
- *  Updates the user profile
+ *  Update the user profile
  *  Only updates phone, first name and last name.
  */
 function updateProfile(userId, profile) {
@@ -35,7 +36,7 @@ function myPosts(userId, status) {
 	}
 	return query
 	.populate('book')
-	.populate('exchanger', ['firstname', 'lastname'])
+	.populate('exchanger', ['firstname', 'lastname', 'rating'])
 	.lean()
 	.sort('-dateCreated')
 	.exec()
@@ -48,7 +49,7 @@ function myPosts(userId, status) {
 }
 
 /**
- * Return the posts where the exchanger is user.
+ * Return the posts where the exchanger is the user.
  */
 function myExchanges(userId, status) {
 	var query = Post.find({exchanger: userId});
@@ -57,7 +58,7 @@ function myExchanges(userId, status) {
 	}
 	return query
 	.populate('book')
-	.populate('creator', ['firstname', 'lastname'])
+	.populate('creator', ['firstname', 'lastname', 'rating'])
 	.lean()
 	.sort('-dateCreated')
 	.exec()
@@ -126,10 +127,17 @@ function updateInterests(userId, interests) {
  * Does not add duplicates.
  */
 function addInterest(userId, postId) {
-	var query = { _id: userId, 'interests.post': {$ne: postId} }
-	var update = {$push: {interests: { post: postId }}}
-	return CommonService
-	.findOneAndUpdate(User, query, update)
+	return User
+	.findById(userId)
+	.exec()
+	.then(function(user) {
+		if (user.interests.some(function(i) { return i.post == postId; })) {
+			throw new Error("The given post is already in interests list.");
+		} else {
+			user.interests.push({ post: postId });
+			return user.save();
+		}
+	})
 	.then(function(user) {
 		return user.interests;
 	})
@@ -160,7 +168,7 @@ function deleteInterest(userId, postId) {
 function visitProfile(userId) {
 	return User
 	.findById(userId)
-	.select('firstname lastname phone local.email facebook.email avatar')
+	.select('firstname lastname phone rating local.email facebook.email avatar')
 	.lean()
 	.exec()
 	.then(function(user){

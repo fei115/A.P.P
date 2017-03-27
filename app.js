@@ -28,6 +28,7 @@ var Book = require('./routes/book.js');
 var Post = require('./routes/post.js');
 var Auth = require('./routes/auth.js');
 var Image = require('./routes/image.js');
+var Admin = require('./routes/admin.js');
 
 /* Protect Routes */
 app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
@@ -38,6 +39,7 @@ app.use('/api', Book);
 app.use('/api', Post);
 app.use('/api', Auth);
 app.use('/api', Image);
+app.use('/api', Admin);
 	
 /* An error handling middleware */
 app.use(function(err, req, res, next) {

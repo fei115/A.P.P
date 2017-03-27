@@ -7,7 +7,7 @@ var AuthService = require('../services/auth.js');
 var passport = require('../middlewares/passport.js');
 
 /**
- * Sign up through email/local
+ * Sign up as a local user through email
  */
 router.put('/auth/signup/local', function(req, res, next){
 	var promise = AuthService.signup(req.body);
@@ -15,7 +15,7 @@ router.put('/auth/signup/local', function(req, res, next){
 });
 
 /**
- * Login an user using userName and password.
+ * Login an user using email and password.
  */
 router.post('/auth/login/local', 
 	passport.authenticate('local', { session: false }),
@@ -26,7 +26,7 @@ router.post('/auth/login/local',
 
 /**
  * Login an user using Facebook access_token
- * It will create an user in the database, if this is first time.
+ * Creates a new user if this is the first time logging in.
  */
 router.get('/auth/login/facebook',
 	passport.authenticate('facebook-token'),
@@ -34,7 +34,7 @@ router.get('/auth/login/facebook',
 	respond
 );
  
-/**
+/** 
  * Send confirmation email
  */
 router.post('/auth/email/confirm',

@@ -3,6 +3,9 @@
 var expressJwt = require('express-jwt');  
 var config = require('../config/config.js');
 
+/** A middleware to extract the token from the request
+ *  and verify it against the secret key.
+ */
 module.exports = expressJwt({
   secret: config.jwt.secretKey,
   credentialsRequired: true,
