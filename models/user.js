@@ -8,8 +8,8 @@ var userSchema = new Schema({
 	firstname:   { type: String, required: true},
 	lastname:    { type: String, required: true},
 	phone:       { type: String, maxlength: 11 },
-	rating:      { type: Number, min: 0, max: 5, default: 0 },
 	role:        { type: String, enum: ['Admin', 'User'], required: true, default: 'User'},
+	rating:      { type: Number, min: 0, required: true, default: 100},
 	verified:    { type: Boolean, required: true, default: false},
 	interests:   [{ 
 		_id:         false,
@@ -29,10 +29,26 @@ var userSchema = new Schema({
 	avatar:      { type: String }
 }); // consider adding pre-save middlewares to ensure local & facebook contains no empty field
 
+// Custom methods
 userSchema.methods.validPassword = function( pwd ) {
     return ( this.local.password === pwd );
 };
 
+userSchema.methods.increaseRating = function(inc) {
+	this.rating += inc;
+	return this.save();
+};
+
+userSchema.methods.decreaseRating = function(dec) {
+	this.rating -= dec;
+	if(this.rating < 0) {
+		this.rating = 0;
+	}
+	return this.save();
+};
+ 
+
+// Ensure foreign key integrity
 idexists.forPath(userSchema.path("interests"));
 
 // the schema is useless so far

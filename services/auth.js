@@ -23,7 +23,6 @@ function signup(profile) {
 				"firstname": profile.firstname,
 				"lastname": profile.lastname,
 				"phone": profile.phone,
-				"rating": 0,
 				"verified": true, // change it to false 
 				"role": 'User',
 				"interests": [],

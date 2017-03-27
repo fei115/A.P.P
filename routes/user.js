@@ -85,12 +85,4 @@ router.get('/user/visit/profile/:id', function(req, res, next) {
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
-/**
- * Rate another user
- */
- router.put('/user/visit/rate', function(req, res, next ) {
-	var promise = UserService.rateUser(req.user.id, req.body);
-	RouteUtil.respondAsJson(promise, res, next);
- });
-
 module.exports = router;	

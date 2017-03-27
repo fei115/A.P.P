@@ -3,7 +3,6 @@
 var User = require('../models/user.js');
 var Post = require('../models/post.js');
 var Book = require('../models/book.js');
-var Rating = require('../models/rating.js');
 var CommonService = require('./common.js');
 
 /**
@@ -172,17 +171,6 @@ function visitProfile(userId) {
 	})
 }
 
-function rateUser(rater, rating) {
-	if (rater === rating.ratee) {
-		return Promise.reject(new Error("User cannot rate itself."));
-	} else {
-		var query = { rater: rater, ratee: rating.ratee };
-		rating.rater = rater;
-		var options = { upsert: true, new: true, runValidators: true };
-		return CommonService.findOneAndUpdate(Rating, query, rating, options);
-	}
-}
-
 module.exports = {
 	myProfile,
 	updateProfile,
@@ -193,6 +181,5 @@ module.exports = {
 	updateInterests,
 	addInterest,
 	deleteInterest,
-	visitProfile,
-	rateUser
+	visitProfile
 }

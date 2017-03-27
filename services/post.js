@@ -1,6 +1,7 @@
 "use strict";
 
 var Post = require('../models/post.js')
+var User = require('../models/user.js')
 var Report = require('../models/report.js')
 var CommonService = require('./common.js');
 
@@ -24,11 +25,29 @@ function findAll(type) {
 
 /**
  * Create a new post
+ * Increases the user rating by 1.
  */
 function create(userId, data) {
 	data.creator = userId;
 	data.status = 'Open';
-	return CommonService.create(Post, data);
+	return CommonService
+	.create(Post, data)
+	.then(function(post) {
+		return CommonService
+		.findById(User, userId, {json: false})
+		.then(function(user) {
+			return user.increaseRating(1);
+		})
+		.then(function(obj) {
+			return post;
+		})
+	})
+	.then(function(post) {
+		return post;
+	})
+	.catch(function(err) {
+		throw err;
+	});
 }
 
 /**
@@ -94,7 +113,7 @@ function report(userId, data) {
 		}
 	})
 	.then(function(count) {
-		if (count < 10) {
+		if (count < 9) {
 			var newReport = {
 				reporter: userId,
 				post: data.post,
@@ -114,10 +133,21 @@ function report(userId, data) {
 	});
 }
 
+/**
+ * Delete a post and its associated reports
+ * Reduces the rating of post creator by 30
+ */
 function deletePostAndReports(postId) {
-	return CommonService.remove(Report, { post: postId })
-	.then(function(obj) {
-		return CommonService.remove(Post, { _id: postId });
+	return CommonService
+	.remove(Report, { post: postId }) // delete related reports
+	.then(function(obj) { // delete the post itself
+		return Post.findOneAndRemove({ _id: postId }).exec();
+	})
+	.then(function(post) { // find user
+		return CommonService.findById(User, post.creator, {json: false})
+	})
+	.then(function(user) { // decrease user rating
+		return user.decreaseRating(100);
 	})
 	.catch(function(err) {
 		throw err;

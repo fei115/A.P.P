@@ -55,7 +55,6 @@ passport.use(new FacebookTokenStrategy({
                 var userData = new User({
                     "firstname": profile.name.givenName,
                     "lastname": profile.name.familyName,
-                    "rating": 0,
                     "verified": true,
                     "role": 'User',
                     "facebook": {
