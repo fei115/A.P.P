@@ -28,7 +28,7 @@ router.get('/book/:id', function(req, res, next) {
  */
 router.put('/book/create', function(req, res, next){
 	req.body.creator = req.user.id;
-	var promise = CommonService.create(Book, data);
+	var promise = CommonService.create(Book, req.body);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
