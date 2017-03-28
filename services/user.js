@@ -99,7 +99,7 @@ function myInterests(userId) {
 	.lean()
 	.exec()
 	.then(function(user) {
-		return user.interests;
+		return flattenInterets(user.interests);
 	})
 	.catch(function(err) {
 		throw err;
@@ -115,7 +115,7 @@ function updateInterests(userId, interests) {
 	return CommonService
 	.findOneAndUpdate(User, query, data)
 	.then(function(user) {
-		return user.interests;
+		return flattenInterets(user.interests);
 	})
 	.catch(function(err) {
 		throw err;
@@ -139,7 +139,7 @@ function addInterest(userId, postId) {
 		}
 	})
 	.then(function(user) {
-		return user.interests;
+		return flattenInterets(user.interests);
 	})
 	.catch(function(err) {
 		throw err;
@@ -160,6 +160,15 @@ function deleteInterest(userId, postId) {
 	.catch(function(err) {
 		throw err;
 	})
+}
+
+/**
+ * Per client request, interests should be returned as [PostObj, PostObj ....]
+ */
+function flattenInterets(interests) {
+	return interests.map(function(i) {
+			return i.post;
+	}).filter(Boolean); // remove falsy (e.g deleted) posts
 }
 
 /**
