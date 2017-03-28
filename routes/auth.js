@@ -10,7 +10,8 @@ var passport = require('../middlewares/passport.js');
  * Sign up as a local user through email
  */
 router.put('/auth/signup/local', function(req, res, next){
-	var promise = AuthService.signup(req.body);
+	var hostPath = req.protocol + '://' + req.get('host') + '/api/auth/verify';
+	var promise = AuthService.signup(req.body, hostPath);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
@@ -33,6 +34,19 @@ router.get('/auth/login/facebook',
     generateToken,
 	respond
 );
+
+/** 
+ * Verify a local user 
+ */
+router.get('/auth/verify/:code', function(req, res, next) {
+	AuthService.verify(req.params.code)
+	.then(function(){
+		return res.redirect('/verified.html');
+	})
+	.catch(function(err) {
+		return next(err);
+	});
+});
  
 /** 
  * Send confirmation email
@@ -44,18 +58,6 @@ router.post('/auth/email/confirm',
 		RouteUtil.respond(result, res, next);
 });
 
-function generateToken(req, res, next) {  
-	req.token = AuthService.genJWToken(req.user.id);
-	return next();
-}
-
-function respond(req, res) {  
-	return res.status(200).json({
-		user: req.user,
-		token: req.token
-	});
-}
-
 function verified(req, res, next) {
 	if(req.user.verified) {
 		return next()
@@ -65,6 +67,19 @@ function verified(req, res, next) {
 			message: "E-mail verification is required."
 		});
 	}
+}
+
+function generateToken(req, res, next) {  
+	req.token = AuthService.genJWToken(req.user.id);
+	return next();
+}
+
+
+function respond(req, res) {  
+	return res.status(200).json({
+		user: req.user,
+		token: req.token
+	});
 }
 
 module.exports = router;

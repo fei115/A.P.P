@@ -21,6 +21,7 @@ app.use(favicon(path.join(__dirname,'public','favicon.ico')));
 	
 /* Statics */
 app.use('/images', express.static(__dirname + '/public/images'));
+app.use('/', express.static(__dirname + '/public/htmls'));
 
 /* Routes */
 var User = require('./routes/user.js');
@@ -31,7 +32,7 @@ var Image = require('./routes/image.js');
 var Admin = require('./routes/admin.js');
 
 /* Protect Routes */
-app.use(/^\/(?!api\/auth).*$/, expressJwtAuth);
+app.use(/^\/api(?!\/auth).*$/, expressJwtAuth);
 
 /* Use routes */
 app.use('/api', User);
