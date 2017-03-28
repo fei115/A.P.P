@@ -13,6 +13,23 @@ function findAll(type) {
 }
 
 /**
+ * Find the post using postId
+ */
+function findById(postId) {
+	Post
+	.findById(postId)
+	.populate('book')
+	.lean()
+	.exec()
+	.then(function(book) {
+		return book;
+	})
+	.catch(function(err) {
+		throw err;
+	});
+}
+
+/**
  * Create a new post
  * Increases the user rating by 1.
  */
@@ -143,6 +160,7 @@ function deletePostAndReports(postId) {
 
 module.exports = {
 	findAll,
+	findById,
 	create,
 	update,
 	remove,

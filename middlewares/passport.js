@@ -20,7 +20,7 @@ passport.use(new LocalStrategy({
 					success: false,
                     message: 'Incorrect email.'
                 });
-            else if (!user.validPassword( AuthService.hashPassword(password, user.local.salt)) )
+            else if (!user.validPassword( AuthService.hashString(password, user.local.salt)))
                 return done(null, false, {
 					success: false,
                     message: 'Incorrect password.'

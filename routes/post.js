@@ -20,7 +20,7 @@ router.get('/posts', function(req, res, next) {
  * Get a post by 'id'
  */
 router.get('/post/:id', function(req, res, next) {
-	var promise = CommonService.findById(Post, req.params.id);
+	var promise = PostService.findById(req.params.id);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 

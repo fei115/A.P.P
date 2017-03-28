@@ -94,6 +94,7 @@ function myInterests(userId) {
 	return User
 	.findById(userId)
 	.populate('interests.post')
+	.populate('interests.post.book')
 	.select('interests.post')
 	.sort('-interests.dateAdded')
 	.lean()

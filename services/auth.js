@@ -18,7 +18,7 @@ function signup(profile) {
 		} else {
 			/* Hash password */
 			var salt = genRandomString(16);
-			var passwordHash = hashPassword(profile.password, salt);
+			var passwordHash = hashString(profile.password, salt);
 			var newUser = new User({
 				"firstname": profile.firstname,
 				"lastname": profile.lastname,
@@ -53,7 +53,6 @@ function sendEmailConfirmation(localUser) {
 	} else if (!localUser.local || !localUser.local.email) {
 		return new Error('User must be a `local` user');
 	} else {
-		var code = randomInt(10000, 100000);
 		var mailOptions = {
 			to: localUser.local.email,
 			subject: 'EZTextbook Email Verification',
@@ -63,6 +62,8 @@ function sendEmailConfirmation(localUser) {
 		return MailService.sendMail(mailOptions);
 	}
 }
+
+// function createVerification)
 
 /**
  * generates a JSON web token for `userId`
@@ -93,14 +94,14 @@ function genRandomString(length){
 };
 
 /**
- * hash password with sha512.
+ * hash string 'str' with sha512.
  * @function
- * @param {string} password - List of required fields.
- * @param {string} salt - Data to be validated.
+ * @param {string} str - The string to be hashed
+ * @param {string} salt - Data used to hash 'str'
  */
-function hashPassword(password, salt){
+function hashString(str, salt){
     var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
-    hash.update(password);
+    hash.update(str);
     return hash.digest('hex');
 };
 
@@ -110,5 +111,5 @@ module.exports = {
 	genJWToken,
 	randomInt,
 	genRandomString,
-	hashPassword
+	hashString
 }
