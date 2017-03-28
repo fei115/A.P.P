@@ -30,12 +30,13 @@ function updateProfile(userId, profile) {
  * Return the posts created by the user
  */
 function myPosts(userId, status) {
-	var query = Post.find({creator: userId});
+	var query = Post.find({ creator: userId });
 	if (status) {
 		query.where('status').equals(status);
 	}
 	return query
 	.populate('book')
+	.populate('creator', ['rating']) // per client request 
 	.populate('exchanger', ['firstname', 'lastname', 'rating'])
 	.lean()
 	.sort('-dateCreated')
@@ -52,7 +53,7 @@ function myPosts(userId, status) {
  * Return the posts where the exchanger is the user.
  */
 function myExchanges(userId, status) {
-	var query = Post.find({exchanger: userId});
+	var query = Post.find({ exchanger: userId });
 	if (status) {
 		query.where('status').equals(status);
 	}
@@ -75,7 +76,7 @@ function myExchanges(userId, status) {
  */
 function myBooks(userId) {
 	return Book
-	.find({creator: userId})
+	.find({ creator: userId })
 	.lean()
 	.sort('-dateAdded')
 	.exec()
