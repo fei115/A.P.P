@@ -7,7 +7,7 @@ var config = require('../config/config.js');
 var MailService = require('./mail.js');
 
 /**
- * Sign up using email
+ * Sign up through email/local
  */
 function signup(profile) {
 	return User

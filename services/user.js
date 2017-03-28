@@ -98,8 +98,8 @@ function myInterests(userId) {
 	.sort('-interests.dateAdded')
 	.lean()
 	.exec()
-	.then(function(posts) {
-		return posts
+	.then(function(user) {
+		return user.interests;
 	})
 	.catch(function(err) {
 		throw err;
