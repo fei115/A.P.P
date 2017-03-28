@@ -95,7 +95,8 @@ function myInterests(userId) {
 	.findById(userId)
 	.populate({
 		path: 'interests.post',
-		populate: { path: 'book' }
+		populate: { path: 'book' },
+		populate: { path: 'creator', select: 'firstname lastname rating' }
 	})
 	.select('interests.post')
 	.sort('-interests.dateAdded')

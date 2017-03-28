@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 var verificationSchema = new Schema({
   user:      { type: Schema.Types.ObjectId, required: true, ref: 'User', unique: true},
   code:      { type: String, required: true, unique: true, index: true },
+  dateAdded: { type: Date, required: true, default: Date.now }
 });
 
 // Ensure foreign key integrity.

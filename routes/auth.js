@@ -10,8 +10,8 @@ var passport = require('../middlewares/passport.js');
  * Sign up as a local user through email
  */
 router.put('/auth/signup/local', function(req, res, next){
-	var hostPath = req.protocol + '://' + req.get('host') + '/api/auth/verify';
-	var promise = AuthService.signup(req.body, hostPath);
+	var verifyRoute = req.protocol + '://' + req.get('host') + '/api/auth/verify';
+	var promise = AuthService.signup(req.body, verifyRoute);
 	RouteUtil.respondAsJson(promise, res, next);
 });
 
@@ -40,7 +40,7 @@ router.get('/auth/login/facebook',
  */
 router.get('/auth/verify/:code', function(req, res, next) {
 	AuthService.verify(req.params.code)
-	.then(function(){
+	.then(function() {
 		return res.redirect('/verified.html');
 	})
 	.catch(function(err) {
@@ -49,7 +49,7 @@ router.get('/auth/verify/:code', function(req, res, next) {
 });
  
 /** 
- * Send confirmation email
+ * Send an confirmation email to newly registered local user.
  */
 router.post('/auth/email/confirm',
 	passport.authenticate('local', { session: false }),
@@ -58,6 +58,9 @@ router.post('/auth/email/confirm',
 		RouteUtil.respond(result, res, next);
 });
 
+/**
+ * Check whether the local user has verified the email yet
+ */
 function verified(req, res, next) {
 	if(req.user.verified) {
 		return next()
@@ -69,12 +72,17 @@ function verified(req, res, next) {
 	}
 }
 
+/**
+ * Generate a JSON web token for the current user.
+ */
 function generateToken(req, res, next) {  
 	req.token = AuthService.genJWToken(req.user.id);
 	return next();
 }
 
-
+/**
+ * Respond with token and user info
+ */
 function respond(req, res) {  
 	return res.status(200).json({
 		user: req.user,
