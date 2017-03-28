@@ -93,8 +93,10 @@ function myBooks(userId) {
 function myInterests(userId) {
 	return User
 	.findById(userId)
-	.populate('interests.post')
-	.populate('interests.post.book')
+	.populate({
+		path: 'interests.post',
+		populate: { path: 'book' }
+	})
 	.select('interests.post')
 	.sort('-interests.dateAdded')
 	.lean()
