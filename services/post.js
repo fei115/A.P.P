@@ -16,13 +16,13 @@ function findAll(type) {
  * Find the post using postId
  */
 function findById(postId) {
-	Post
+	return Post
 	.findById(postId)
 	.populate('book')
 	.lean()
 	.exec()
-	.then(function(book) {
-		return book;
+	.then(function(post) {
+		return post;
 	})
 	.catch(function(err) {
 		throw err;
