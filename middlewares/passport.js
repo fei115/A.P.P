@@ -59,8 +59,8 @@ passport.use(new FacebookTokenStrategy({
                     "role": 'User',
                     "facebook": {
                         "id": profile.id,
-                        "token": accessToken
-                        //"email": profile.emails[0].value  // Facebook API is not return email for some reason, added github issue
+                        "token": accessToken,
+                        "email": profile.emails[0].value  // TODO: not all fb users have emails: phone#, email not verified etc
                     },
 					"avatar": profile.photo[0].value
                 });

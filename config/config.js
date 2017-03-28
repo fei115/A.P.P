@@ -16,6 +16,12 @@ module.exports = {
 	'email': {
 		'address': 'noreply.eztextbook@gmail.com',
 		'password': '8UvThpWqrutj'
+	},
+	
+	'aws': {
+		'accessKeyId': 'AKIAIJJCLLJ7F23G2IQA',
+		'associateTag': 'cs4461171-20',
+		'secretKey': '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'
 	}
 
 };

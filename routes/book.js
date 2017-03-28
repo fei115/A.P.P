@@ -6,6 +6,7 @@ var Book = require('../models/book.js');
 var RouteUtil = require('./util.js');
 var BookService = require('../services/book.js');
 var CommonService = require('../services/common.js');
+var AmazonService = require('../services/amazon.js');
 
 /**
  * Get all books from the database
@@ -47,6 +48,14 @@ router.put('/book/create', function(req, res, next){
 router.get('/book/search/criteria', function(req, res, next){
 	var promise = BookService.search(req.query)
 	RouteUtil.respondAsJson(promise, res, next)
+});
+
+/**
+ * Search for book(s)
+ */
+router.get('/book/search/amazon', function(req, res, next){
+	var promise = AmazonService.bookLookUp(req.query.isbn);
+	RouteUtil.respondAsJson(promise, res, next);
 });
 
 module.exports = router;
