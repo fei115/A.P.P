@@ -1,3 +1,0 @@
-#!/bin/bash
-
- curl http://localhost:3000/api/user/interests?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4ZGEzOWZiMDI2MTk1MjFlY2NiOWJiYyIsImlhdCI6MTQ5MDY5Njc0M30.Xs8DcxYJH1e88Yh-O1yEFFxEKRNOmB2vtRkvmvgSUp4
