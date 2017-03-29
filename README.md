@@ -4,6 +4,6 @@ EZTextbook is an mobile application mainly for students studying at the Universi
 
 ## Authors
 
-* **Phillip Jie** - *Initial work* - [PurpleBooth](https://github.com/fei115)
+* **Phillip Jie** (https://github.com/fei115)
 
 
