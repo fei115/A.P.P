@@ -12,6 +12,10 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+/**
+ * Sends an email via eztextbook's email account
+ * See link for detail: https://nodemailer.com/about/
+ */
 function sendMail(mailOptions, cb) {
 	transporter.sendMail(mailOptions, cb);
 }

@@ -125,7 +125,6 @@ function report(userId, data) {
 			};
 			return CommonService.create(Report, newReport);
 		} else {
-			console.log("Spam count reach 10. Delete Post!!")
 			return deletePostAndReports(data.post)
 		}
 	})
@@ -151,7 +150,7 @@ function deletePostAndReports(postId) {
 		return CommonService.findById(User, post.creator, {json: false})
 	})
 	.then(function(user) { // decrease user rating
-		return user.decreaseRating(100);
+		return user.decreaseRating(30);
 	})
 	.catch(function(err) {
 		throw err;

@@ -120,16 +120,6 @@ function genJWToken(userId) {
 }
 
 /**
- * generates random integer between low (inclusive) and high (exclusive)
- * @function
- * @param {integer} low - The lower bound
- * @param {integer} high - The upper bound
- */
-function randomInt (low, high) {
-    return Math.floor(Math.random() * (high - low) + low);
-}
-
-/**
  * generates random string of characters i.e salt
  * @function
  * @param {number} length - Length of the random string.
@@ -169,7 +159,6 @@ module.exports = {
 	verify,
 	sendEmailConfirmation,
 	genJWToken,
-	randomInt,
 	genRandomString,
 	hashString
 }

@@ -46,6 +46,10 @@ function findAll(model, opt) {
 	});
 }
 
+
+/**
+ * Create and save a doc of type 'model' with content 'data'
+ */
 function create(model, data) {
 	var modelInstance = new model(data);
 	return modelInstance
@@ -58,6 +62,10 @@ function create(model, data) {
 	})
 }
 
+/**
+ * Find a doc of type 'model' using 'query', then updates
+ * the doc with 'data'. 
+ */
 function findOneAndUpdate(model, query, data, opt) {
 	if (opt) {
 		// do nothing
@@ -79,6 +87,10 @@ function findOneAndUpdate(model, query, data, opt) {
 	});
 }
 
+/**
+ * Find and remove docs of type 'model' using 'query'.
+ * Throws an error if nothing is deleted.
+ */
 function remove(model, query) {
 	return model
 	.remove(query)

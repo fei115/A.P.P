@@ -12,6 +12,7 @@ var CommonService = require('./common.js');
 function myProfile(userId) {
 	return CommonService.findById(User, userId);
 }
+
 /**
  *  Update the user profile
  *  Only updates phone, first name and last name.
@@ -170,15 +171,6 @@ function deleteInterest(userId, postId) {
 }
 
 /**
- * Per client request, interests should be returned as [PostObj, PostObj ....]
- */
-function flattenInterets(interests) {
-	return interests.map(function(i) {
-			return i.post;
-	}).filter(Boolean); // remove falsy (e.g deleted) posts
-}
-
-/**
  * Return the profile of a user in visitor mode 
  */
 function visitProfile(userId) {
@@ -193,6 +185,15 @@ function visitProfile(userId) {
 	.catch(function(err) {
 		throw err;
 	})
+}
+
+/**
+ * Per client request, interests should be returned as [PostObj, PostObj ....]
+ */
+function flattenInterets(interests) {
+	return interests.map(function(i) {
+			return i.post;
+	}).filter(Boolean); // remove falsy (e.g deleted) posts
 }
 
 module.exports = {
