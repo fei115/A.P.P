@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Send `Result` back to client, where `result` is a JSON object.
+ */
 function respond(result, res, next) {
 	if (result instanceof Error) {
 		return next(result);
@@ -8,6 +11,9 @@ function respond(result, res, next) {
 	}
 }
 
+/**
+ * Send `promise` back to client, where promise has the form Promise(JSON).
+ */
 function respondAsJson(promise, res, next) {
 	promise
 	.then(function(object) {

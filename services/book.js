@@ -10,6 +10,7 @@ function update(userId, data) {
 	var query = { creator: userId, isbn: data.isbn };
 	return CommonService.findOneAndUpdate(Book, query, data);	
 }
+
 /**
  * Search a book, currently supports search via
  * 		1. title

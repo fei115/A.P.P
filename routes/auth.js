@@ -44,7 +44,7 @@ router.get('/auth/verify/:code', function(req, res, next) {
 		return res.redirect('/verified.html');
 	})
 	.catch(function(err) {
-		return next(err);
+		return res.redirect('/error.html');
 	});
 });
  
