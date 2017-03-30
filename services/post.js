@@ -111,7 +111,7 @@ function report(userId, data) {
 	.findOne({ reporter: userId, post: data.post })
 	.then(function(prevReport) {
 	//	if (prevReport) {
-			throw new Error('User reported post before.');
+		//	throw new Error('User reported post before.');
 	//	} else {
 			return Report.count({ post: data.post });
 //		}
