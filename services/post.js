@@ -110,11 +110,11 @@ function report(userId, data) {
 	return Report
 	.findOne({ reporter: userId, post: data.post })
 	.then(function(prevReport) {
-		if (prevReport) {
+	//	if (prevReport) {
 			throw new Error('User reported post before.');
-		} else {
+	//	} else {
 			return Report.count({ post: data.post });
-		}
+//		}
 	})
 	.then(function(count) {
 		if (count < 9) {
